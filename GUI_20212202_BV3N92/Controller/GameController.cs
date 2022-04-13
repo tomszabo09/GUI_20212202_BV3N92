@@ -48,6 +48,9 @@ namespace GUI_20212202_BV3N92.Controller
                 case Key.Space:
                     control.Control(GameLogic.Controls.shoot);
                     break;
+                case Key.Escape:
+                    control.Control(GameLogic.Controls.menu);
+                    break;
             }
         }
     }

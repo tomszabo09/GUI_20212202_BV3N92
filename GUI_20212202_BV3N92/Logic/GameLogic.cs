@@ -17,7 +17,7 @@ namespace GUI_20212202_BV3N92.Logic
 
         public enum Controls
         {
-            moveUp, moveLeft, moveDown, moveRight, rotateUp, rotateLeft, rotateDown, rotateRight, shoot
+            moveUp, moveLeft, moveDown, moveRight, rotateUp, rotateLeft, rotateDown, rotateRight, shoot, menu
         }
 
         private Player player;
@@ -81,6 +81,9 @@ namespace GUI_20212202_BV3N92.Logic
                     break;
                 case Controls.shoot:
                     player.Shoot(player.Direction);
+                    break;
+                case Controls.menu:
+                    // TODO: menu
                     break;
             }
 
