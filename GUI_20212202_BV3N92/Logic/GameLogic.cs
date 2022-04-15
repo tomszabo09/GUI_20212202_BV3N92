@@ -1,4 +1,5 @@
 ﻿using GUI_20212202_BV3N92.Models;
+using GUI_20212202_BV3N92.Windows;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,8 @@ namespace GUI_20212202_BV3N92.Logic
 {
     public class GameLogic : IGameModel, IGameControl
     {
+        MenuWindow menu = new MenuWindow();
+
         public enum MapItem
         {
             player, wall, floor, ammo, opponent, brick, health, locked, exit, finish
@@ -83,6 +86,7 @@ namespace GUI_20212202_BV3N92.Logic
                     player.Shoot(player.Direction);
                     break;
                 case Controls.menu:
+                    menu.ShowDialog();
                     // TODO: menu
                     break;
             }
