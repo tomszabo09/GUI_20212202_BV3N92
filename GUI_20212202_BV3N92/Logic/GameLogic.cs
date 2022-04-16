@@ -153,6 +153,7 @@ namespace GUI_20212202_BV3N92.Logic
                             //exit
 
                             mainWindow.Close();
+                            File.Delete("save.lvl");
                         }
                     }
 
