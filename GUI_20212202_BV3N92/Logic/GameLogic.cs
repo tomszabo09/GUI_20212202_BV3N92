@@ -92,6 +92,16 @@ namespace GUI_20212202_BV3N92.Logic
                 case Controls.menu:
                     MenuWindow menu = new MenuWindow(window);
                     menu.ShowDialog();
+
+                    if (menu.ShowDialog() == true)
+                    {
+                        //save
+                    }
+                    else
+                    {
+                        //restart
+                        GameLogic restart = new GameLogic(window);
+                    }
                     // TODO: menu
                     break;
             }

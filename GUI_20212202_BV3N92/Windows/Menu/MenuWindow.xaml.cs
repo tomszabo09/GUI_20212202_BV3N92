@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GUI_20212202_BV3N92.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,8 +20,10 @@ namespace GUI_20212202_BV3N92.Windows
     /// </summary>
     public partial class MenuWindow : Window
     {
-        public MenuWindow()
+        MainWindow window;
+        public MenuWindow(MainWindow window)
         {
+            this.window = window;
             InitializeComponent();
         }
 
@@ -31,17 +34,17 @@ namespace GUI_20212202_BV3N92.Windows
 
         private void b_save_Click(object sender, RoutedEventArgs e)
         {
-
+            this.DialogResult = true;
         }
 
         private void b_resetart_Click(object sender, RoutedEventArgs e)
         {
-
+            this.DialogResult = false;
         }
 
         private void b_exit_Click(object sender, RoutedEventArgs e)
         {
-
+            window.Close();
         }
     }
 }
