@@ -23,5 +23,25 @@ namespace GUI_20212202_BV3N92.Windows
         {
             InitializeComponent();
         }
+
+        private void b_resume_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void b_save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void b_resetart_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void b_exit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

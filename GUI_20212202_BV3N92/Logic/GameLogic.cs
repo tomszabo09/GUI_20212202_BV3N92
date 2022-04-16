@@ -12,8 +12,9 @@ namespace GUI_20212202_BV3N92.Logic
 {
     public class GameLogic : IGameModel, IGameControl
     {
-        MenuWindow menu = new MenuWindow();
-        EndingWindow ending = new EndingWindow();
+
+        MainWindow window;
+
         public enum MapItem
         {
             player, wall, floor, ammo, opponent, brick, health, locked, exit, finish
@@ -30,8 +31,10 @@ namespace GUI_20212202_BV3N92.Logic
 
         public MapItem[,] Map { get; set; }
 
-        public GameLogic()
+        public GameLogic(MainWindow window)
         {
+            this.window = window;
+
             string[] lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "levels"), "*.lvl");
             player = new Player();
             opponents = new List<Opponent>();
@@ -87,6 +90,7 @@ namespace GUI_20212202_BV3N92.Logic
                     player.Shoot(player.Direction);
                     break;
                 case Controls.menu:
+                    MenuWindow menu = new MenuWindow(window);
                     menu.ShowDialog();
                     // TODO: menu
                     break;
@@ -122,7 +126,18 @@ namespace GUI_20212202_BV3N92.Logic
                     }
                     else
                     {
+                        EndingWindow ending = new EndingWindow();
                         ending.ShowDialog();
+
+                        if (ending.ShowDialog() == true)
+                        {
+                            GameLogic restart = new GameLogic(window);
+                        }
+                        else
+                        {
+                            window.Close();
+                            //TODO: close the MainWindow
+                        }
                     }
 
                 }
