@@ -13,7 +13,7 @@ namespace GUI_20212202_BV3N92.Logic
     public class GameLogic : IGameModel, IGameControl
     {
 
-        MainWindow window;
+        MainWindow mainWindow;
 
         public enum MapItem
         {
@@ -33,7 +33,7 @@ namespace GUI_20212202_BV3N92.Logic
 
         public GameLogic(MainWindow window)
         {
-            this.window = window;
+            this.mainWindow = window;
 
             string[] lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "levels"), "*.lvl");
             player = new Player();
@@ -90,19 +90,22 @@ namespace GUI_20212202_BV3N92.Logic
                     player.Shoot(player.Direction);
                     break;
                 case Controls.menu:
-                    MenuWindow menu = new MenuWindow(window);
+                    MenuWindow menu = new MenuWindow(mainWindow);
                     menu.ShowDialog();
 
                     if (menu.ShowDialog() == true)
                     {
-                        //save
+                        //TODO: save
+
+                        SaveLevel();
                     }
                     else
                     {
                         //restart
-                        GameLogic restart = new GameLogic(window);
+
+                        GameLogic restart = new GameLogic(mainWindow);
                     }
-                    // TODO: menu
+
                     break;
             }
 
@@ -141,12 +144,15 @@ namespace GUI_20212202_BV3N92.Logic
 
                         if (ending.ShowDialog() == true)
                         {
-                            GameLogic restart = new GameLogic(window);
+                            //restart
+
+                            GameLogic restart = new GameLogic(mainWindow);
                         }
                         else
                         {
-                            window.Close();
-                            //TODO: close the MainWindow
+                            //exit
+
+                            mainWindow.Close();
                         }
                     }
 
@@ -180,6 +186,22 @@ namespace GUI_20212202_BV3N92.Logic
                     else if (Map[i, j] == MapItem.opponent)
                         opponents.Add(new Opponent() { Position = new int[] { i, j } });
                 }
+            }
+        }
+
+        private void SaveLevel()
+        {
+            StreamWriter sw = new StreamWriter("save.lvl");
+            sw.WriteLine(Map.GetLength(1));
+            sw.WriteLine(Map.GetLength(0));
+
+            for (int i = 0; i < Map.GetLength(0); i++)
+            {
+                for (int j = 0; j < Map.GetLength(1); j++)
+                {
+                    sw.Write(Map[i + 2, j]);
+                }
+                sw.Write("\n");
             }
         }
 
