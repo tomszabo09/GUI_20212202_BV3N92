@@ -28,6 +28,7 @@ namespace GUI_20212202_BV3N92.Logic
         private Player player;
         private List<Opponent> opponents;
         private Queue<string> levels;
+        private string currentLevel;
 
         public MapItem[,] Map { get; set; }
 
@@ -36,17 +37,41 @@ namespace GUI_20212202_BV3N92.Logic
             this.mainWindow = window;
 
             string[] lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "levels"), "*.lvl");
+            string saved = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "saved"), "*.sav").First();
             player = new Player();
             opponents = new List<Opponent>();
-
             levels = new Queue<string>();
-            foreach (var lvl in lvls)
-            {
-                levels.Enqueue(lvl);
-            }
 
-            if (levels.Count > 0)
-                LoadLevel(levels.Dequeue());
+            if (saved != null)
+            {
+                StreamReader sr = new StreamReader("save.sav");
+                string currentLvl = sr.ReadLine();
+
+                int i = 0;
+                while (!lvls[i].Contains(currentLvl))
+                {
+                    i++;
+                }
+                while (i < lvls.Length)
+                {
+                    levels.Enqueue(lvls[i]);
+                }
+
+                if (levels.Count > 0)
+                    currentLevel = levels.Dequeue();
+                    LoadLevel(currentLevel, true);
+            }
+            else
+            {
+                foreach (var lvl in lvls)
+                {
+                    levels.Enqueue(lvl);
+                }
+
+                if (levels.Count > 0)
+                    currentLevel = levels.Dequeue();
+                    LoadLevel(currentLevel, false);
+            }
         }
 
         public void Control(Controls control)
@@ -135,7 +160,7 @@ namespace GUI_20212202_BV3N92.Logic
                 {
                     if (levels.Count > 0)
                     {
-                        LoadLevel(levels.Dequeue());
+                        LoadLevel(levels.Dequeue(),false);
                     }
                     else
                     {
@@ -153,7 +178,7 @@ namespace GUI_20212202_BV3N92.Logic
                             //exit
 
                             mainWindow.Close();
-                            File.Delete("save.lvl");
+                            File.Delete("save.sav");
                         }
                     }
 
@@ -170,22 +195,45 @@ namespace GUI_20212202_BV3N92.Logic
             // TODO: implement opponent shooting at player
         }
 
-        private void LoadLevel(string lvlPath)
+        private void LoadLevel(string lvlPath, bool saved)
         {
-            string[] lines = File.ReadAllLines(lvlPath);
-            Map = new MapItem[int.Parse(lines[1]), int.Parse(lines[0])];
-            for (int i = 0; i < Map.GetLength(0); i++)
+            //TODO: saved one more line
+            if (saved)
             {
-                for (int j = 0; j < Map.GetLength(1); j++)
+                string[] lines = File.ReadAllLines(lvlPath);
+                Map = new MapItem[int.Parse(lines[1]), int.Parse(lines[0])];
+                for (int i = 0; i < Map.GetLength(0); i++)
                 {
-                    Map[i, j] = ConvertToEnum(lines[i + 2][j]);
-
-                    if (Map[i, j] == MapItem.player)
+                    for (int j = 0; j < Map.GetLength(1); j++)
                     {
-                        player.Position = new int[] { i, j };
+                        Map[i, j] = ConvertToEnum(lines[i + 3][j]);
+
+                        if (Map[i, j] == MapItem.player)
+                        {
+                            player.Position = new int[] { i, j };
+                        }
+                        else if (Map[i, j] == MapItem.opponent)
+                            opponents.Add(new Opponent() { Position = new int[] { i, j } });
                     }
-                    else if (Map[i, j] == MapItem.opponent)
-                        opponents.Add(new Opponent() { Position = new int[] { i, j } });
+                }
+            }
+            else
+            {
+                string[] lines = File.ReadAllLines(lvlPath);
+                Map = new MapItem[int.Parse(lines[1]), int.Parse(lines[0])];
+                for (int i = 0; i < Map.GetLength(0); i++)
+                {
+                    for (int j = 0; j < Map.GetLength(1); j++)
+                    {
+                        Map[i, j] = ConvertToEnum(lines[i + 2][j]);
+
+                        if (Map[i, j] == MapItem.player)
+                        {
+                            player.Position = new int[] { i, j };
+                        }
+                        else if (Map[i, j] == MapItem.opponent)
+                            opponents.Add(new Opponent() { Position = new int[] { i, j } });
+                    }
                 }
             }
         }
@@ -193,8 +241,9 @@ namespace GUI_20212202_BV3N92.Logic
         private void SaveLevel()
         {
             StreamWriter sw = new StreamWriter("save.lvl");
+            sw.WriteLine(currentLevel);
             sw.WriteLine(Map.GetLength(1));
-            sw.WriteLine(Map.GetLength(0));
+            sw.WriteLine(Map.GetLength(0));     
 
             for (int i = 0; i < Map.GetLength(0); i++)
             {
@@ -204,6 +253,8 @@ namespace GUI_20212202_BV3N92.Logic
                 }
                 sw.Write("\n");
             }
+
+            sw.Close();
         }
 
         private MapItem ConvertToEnum(char mapItem)
