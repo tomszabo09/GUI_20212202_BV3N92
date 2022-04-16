@@ -1,5 +1,6 @@
 ﻿using GUI_20212202_BV3N92.Models;
 using GUI_20212202_BV3N92.Windows;
+using GUI_20212202_BV3N92.Windows.Ending;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,7 @@ namespace GUI_20212202_BV3N92.Logic
     public class GameLogic : IGameModel, IGameControl
     {
         MenuWindow menu = new MenuWindow();
-
+        EndingWindow ending = new EndingWindow();
         public enum MapItem
         {
             player, wall, floor, ammo, opponent, brick, health, locked, exit, finish
@@ -116,12 +117,16 @@ namespace GUI_20212202_BV3N92.Logic
                 if (Map[i, j] == MapItem.exit)
                 {
                     if (levels.Count > 0)
+                    {
                         LoadLevel(levels.Dequeue());
+                    }
+                    else
+                    {
+                        ending.ShowDialog();
+                    }
+
                 }
-                if (Map[i, j] == MapItem.finish)
-                {
-                    // TODO: implement game ending
-                }
+
             }
             else if (control == Controls.shoot)
             {
