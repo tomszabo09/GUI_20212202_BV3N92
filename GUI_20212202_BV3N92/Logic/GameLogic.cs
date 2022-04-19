@@ -137,7 +137,7 @@ namespace GUI_20212202_BV3N92.Logic
             {
                 for (int j = 0; j < Map.GetLength(1); j++)
                 {
-                    Map[i, j] = ConvertToEnum(lines[i + 2][j]);
+                    Map[i, j] = ConvertToEnum(lines[i+2][j]);
 
                     if (Map[i, j] == MapItem.player)
                     {
@@ -147,6 +147,7 @@ namespace GUI_20212202_BV3N92.Logic
                         opponents.Add(new Opponent() { Position = new int[] { i, j } });
                 }
             }
+            ;
         }
 
         private MapItem ConvertToEnum(char mapItem)
