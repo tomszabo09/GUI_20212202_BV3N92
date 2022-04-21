@@ -55,6 +55,7 @@ namespace GUI_20212202_BV3N92.Logic
 
             if (saved != null)
             {
+                //TODO: too much // in currentLvl
                 StreamReader sr = new StreamReader(saved);
                 string currentLvl = sr.ReadLine();
 
@@ -67,6 +68,8 @@ namespace GUI_20212202_BV3N92.Logic
                 {
                     levels.Enqueue(lvls[i]);
                 }
+
+                sr.Close();
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
