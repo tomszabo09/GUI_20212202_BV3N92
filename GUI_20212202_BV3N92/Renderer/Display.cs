@@ -29,8 +29,8 @@ namespace GUI_20212202_BV3N92.Renderer
             base.OnRender(drawingContext);
             if (model != null && size.Width>50 && size.Height>50)
             {
-                double itemWidth = size.Width / model.Map.GetLength(0);
-                double itemHeight = size.Height / model.Map.GetLength(1);
+                double itemWidth = size.Width / model.Map.GetLength(1);
+                double itemHeight = size.Height / model.Map.GetLength(0);
                 drawingContext.DrawRectangle(Brushes.Black, new Pen(Brushes.Black, 0), new Rect(0, 0, size.Width, size.Height));
                 for (int i = 0; i < model.Map.GetLength(0); i++)
                 {
@@ -67,7 +67,7 @@ namespace GUI_20212202_BV3N92.Renderer
                                 break;
                         }
                         drawingContext.DrawRectangle(brush, new Pen(Brushes.Black, 0),
-                                    new Rect(i * itemWidth, j * itemHeight, itemWidth, itemHeight)
+                                    new Rect(j * itemWidth, i * itemHeight, itemWidth, itemHeight)
                                     );
                     }                   
                 }
