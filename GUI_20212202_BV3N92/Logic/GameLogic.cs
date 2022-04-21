@@ -37,18 +37,29 @@ namespace GUI_20212202_BV3N92.Logic
             this.mainWindow = window;
 
             string[] lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "levels"), "*.lvl");
-            string saved = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "saved"), "*.sav").First();
+            string saved;
+
+            try
+            {
+                saved = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "saved"), "*.sav").First();
+            }
+            catch (Exception)
+            {
+
+                saved = null;
+            }
+
             player = new Player();
             opponents = new List<Opponent>();
             levels = new Queue<string>();
 
             if (saved != null)
             {
-                StreamReader sr = new StreamReader("save.sav");
+                StreamReader sr = new StreamReader(saved);
                 string currentLvl = sr.ReadLine();
 
                 int i = 0;
-                while (!lvls[i].Contains(currentLvl))
+                while (!lvls[i].Contains(currentLvl) && i < lvls.Length)
                 {
                     i++;
                 }
@@ -237,7 +248,7 @@ namespace GUI_20212202_BV3N92.Logic
 
         private void SaveLevel()
         {
-            StreamWriter sw = new StreamWriter("save.lvl");
+            StreamWriter sw = new StreamWriter("saved/save.sav");
             sw.WriteLine(currentLevel);
             sw.WriteLine(Map.GetLength(1));
             sw.WriteLine(Map.GetLength(0));     
