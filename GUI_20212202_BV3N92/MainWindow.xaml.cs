@@ -24,6 +24,7 @@ namespace GUI_20212202_BV3N92
         public MainWindow()
         {
             InitializeComponent();
+
             GameLogic logic = new GameLogic();
             display.SetupModel(logic);
 
@@ -39,6 +40,7 @@ namespace GUI_20212202_BV3N92
         {
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
             display.InvalidateVisual();
+
         }
     }
 }
