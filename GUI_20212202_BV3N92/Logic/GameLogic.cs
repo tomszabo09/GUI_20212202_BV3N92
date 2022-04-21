@@ -59,7 +59,7 @@ namespace GUI_20212202_BV3N92.Logic
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
-                    LoadLevel(currentLevel, true);
+                    LoadLevel(saved, true);
             }
             else
             {
@@ -120,14 +120,12 @@ namespace GUI_20212202_BV3N92.Logic
 
                     if (menu.ShowDialog() == true)
                     {
-                        //TODO: save
-
+                        //save
                         SaveLevel();
                     }
                     else
                     {
                         //restart
-
                         GameLogic restart = new GameLogic(mainWindow);
                     }
 
@@ -197,7 +195,6 @@ namespace GUI_20212202_BV3N92.Logic
 
         private void LoadLevel(string lvlPath, bool saved)
         {
-            //TODO: saved one more line
             if (saved)
             {
                 string[] lines = File.ReadAllLines(lvlPath);
@@ -281,6 +278,18 @@ namespace GUI_20212202_BV3N92.Logic
                     return MapItem.finish;
                 default:
                     return MapItem.floor;
+            }
+        }
+
+        private void OnDeath(string currentLevel)
+        {
+            if (player.Health > 0)
+            {
+                LoadLevel(currentLevel, false);
+            }
+            else
+            {
+                GameLogic restart = new GameLogic(mainWindow);
             }
         }
     }
