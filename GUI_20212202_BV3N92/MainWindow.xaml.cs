@@ -24,7 +24,23 @@ namespace GUI_20212202_BV3N92
         public MainWindow()
         {
             InitializeComponent();
-            GameLogic logic = new GameLogic(this);
+
+            GameLogic logic = new GameLogic();
+            display.SetupModel(logic);
+
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
+            display.InvalidateVisual();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
+            display.InvalidateVisual();
+
         }
     }
 }
