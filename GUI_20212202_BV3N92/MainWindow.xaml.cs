@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GUI_20212202_BV3N92.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace GUI_20212202_BV3N92
         public MainWindow()
         {
             InitializeComponent();
+            GameLogic logic = new GameLogic(this);
         }
     }
 }
