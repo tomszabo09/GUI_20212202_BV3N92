@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace GUI_20212202_BV3N92
 {
@@ -21,9 +22,16 @@ namespace GUI_20212202_BV3N92
     /// </summary>
     public partial class MainWindow : Window
     {
+        GameLogic logic;
+        DispatcherTimer gameTimer = new DispatcherTimer();
+        bool goLeft, goRight, goUp, goDown;
+        bool noLeft, noRight, noUp, noDown;
+        int speed = 8;
+        Rect playerhitbox;
         public MainWindow()
         {
             InitializeComponent();
+            logic = new GameLogic(this);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -33,11 +41,30 @@ namespace GUI_20212202_BV3N92
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            GameLogic logic = new GameLogic(this);
+        {           
             display.SetupModel(logic);
             display.Resize(new Size(canvas.ActualWidth, canvas.ActualHeight));
-            display.InvalidateVisual();           
+            display.InvalidateVisual();
+            gameTimer.Interval = TimeSpan.FromSeconds(20);
+            //gameTimer.Tick += Gameloop;
+            
         }
+
+        private void GameLoop()
+        {
+            
+        }
+
+        private void canvas_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+        }
+
+        private void canvas_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        
     }
 }
