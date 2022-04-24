@@ -40,6 +40,7 @@ namespace GUI_20212202_BV3N92.Renderer
                         switch (model.Map[i,j])
                         {
                             case GameLogic.MapItem.player:
+                                brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "player.bmp"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.MapItem.wall:
                                 brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images","wall.bmp"),UriKind.RelativeOrAbsolute)));

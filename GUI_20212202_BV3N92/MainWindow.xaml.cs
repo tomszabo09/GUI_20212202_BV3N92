@@ -38,7 +38,7 @@ namespace GUI_20212202_BV3N92
             display.SetupModel(logic);
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
             display.InvalidateVisual();
-
+            ;
         }
     }
 }
