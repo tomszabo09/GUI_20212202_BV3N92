@@ -37,8 +37,7 @@ namespace GUI_20212202_BV3N92
             GameLogic logic = new GameLogic(this);
             display.SetupModel(logic);
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
-            display.InvalidateVisual();
-            ;
+            display.InvalidateVisual();           
         }
     }
 }
