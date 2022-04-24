@@ -31,7 +31,6 @@ namespace GUI_20212202_BV3N92.Renderer
             {
                 double itemWidth = size.Width / model.Map.GetLength(1);
                 double itemHeight = size.Height / model.Map.GetLength(0);
-                drawingContext.DrawRectangle(Brushes.Black, new Pen(Brushes.Black, 0), new Rect(0, 0, size.Width, size.Height));
                 for (int i = 0; i < model.Map.GetLength(0); i++)
                 {
                     for (int j = 0; j < model.Map.GetLength(1); j++)
@@ -51,6 +50,7 @@ namespace GUI_20212202_BV3N92.Renderer
                                 brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "ammosingle.bmp"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.MapItem.opponent:
+                                brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "opponent.bmp"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.MapItem.brick:
                                 brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "brick.bmp"), UriKind.RelativeOrAbsolute)));
@@ -59,10 +59,13 @@ namespace GUI_20212202_BV3N92.Renderer
                                 brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "hp.bmp"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.MapItem.locked:
+                                brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "lock.bmp"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.MapItem.exit:
+                                brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "exit.bmp"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.MapItem.finish:
+                                brush = new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "finish.bmp"), UriKind.RelativeOrAbsolute)));
                                 break;
                             default:
                                 break;
