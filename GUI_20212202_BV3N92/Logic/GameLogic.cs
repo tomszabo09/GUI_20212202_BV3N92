@@ -36,7 +36,7 @@ namespace GUI_20212202_BV3N92.Logic
         {
             this.mainWindow = window;
 
-            string[] lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "levels"), "*.lvl");
+            string[] lvls = Directory.GetFiles(Path.Combine("levels"), "*.lvl");
             string saved;
 
             try
