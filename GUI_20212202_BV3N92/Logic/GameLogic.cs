@@ -35,10 +35,10 @@ namespace GUI_20212202_BV3N92.Logic
 
         public MapItem[,] Map { get; set; }
 
-        public GameLogic(MainWindow window)
+        public GameLogic(MainWindow window, Size size)
         {
             this.mainWindow = window;
-
+            this.size = size;
             string[] lvls = Directory.GetFiles(Path.Combine("levels"), "*.lvl");
             string saved;
 
@@ -229,6 +229,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'w':
@@ -236,6 +238,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'a':
@@ -243,6 +247,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'o':
@@ -250,6 +256,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 Map[i, j] = op;
                                 opponents.Add(op);
@@ -259,6 +267,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'h':
@@ -266,6 +276,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'l':
@@ -273,6 +285,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'e':
@@ -280,6 +294,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'f':
@@ -287,6 +303,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             default:
@@ -294,6 +312,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                         }
@@ -317,6 +337,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'w':
@@ -324,6 +346,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'a':
@@ -331,6 +355,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'o':
@@ -338,6 +364,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 Map[i, j] = op;
                                 opponents.Add(op);
@@ -347,6 +375,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'h':
@@ -354,6 +384,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'l':
@@ -361,6 +393,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'e':
@@ -368,6 +402,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             case 'f':
@@ -375,6 +411,8 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                             default:
@@ -382,13 +420,16 @@ namespace GUI_20212202_BV3N92.Logic
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
+                                    displayWidth = rectWidth,
+                                    displayHeight = rectHeight
                                 };
                                 break;
                         }
                     }
                 }
+                ;
             }
-            ;
+            
         }
 
         private void SaveLevel()
@@ -418,7 +459,7 @@ namespace GUI_20212202_BV3N92.Logic
             }
             else
             {
-                GameLogic restart = new GameLogic(mainWindow);
+                GameLogic restart = new GameLogic(mainWindow,size);
             }
         }
     }
