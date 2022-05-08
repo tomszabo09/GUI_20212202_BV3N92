@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace GUI_20212202_BV3N92.Models
 {
-    public class Opponent : IModel
+    public class Opponent : MapItem
     {
-        public int[] Position { get; set; }
         public Directions Direction { get; set; }
         public bool PlayerInSight { get; set; }
 
@@ -16,6 +15,7 @@ namespace GUI_20212202_BV3N92.Models
         {
             PlayerInSight = false;
             Direction = Directions.right;
+            type = Logic.ItemType.opponent;
         }
 
         public void Shoot(Directions direction)

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace GUI_20212202_BV3N92.Models
 {
-    public class Player : IModel
+    public class Player : MapItem
     {
-        public int[] Position { get; set; }
         public Directions Direction { get; set; }
         public int Health { get; set; }
         public int Ammo { get; set; }
@@ -18,11 +17,13 @@ namespace GUI_20212202_BV3N92.Models
             Health = 3;
             Ammo = 3;
             Direction = Directions.right;
+            type = Logic.ItemType.player;
         }
 
         public void Shoot(Directions direction)
         {
             // TODO: implement shooting
         }
+        
     }
 }
