@@ -15,7 +15,7 @@ namespace GUI_20212202_BV3N92.Renderer
     public class Display : FrameworkElement
     {
         IGameModel model;
-        Size size;
+        public Size size;
         public double rectWidth;
         public double rectHeight;
 
@@ -49,6 +49,7 @@ namespace GUI_20212202_BV3N92.Renderer
                 {
                     for (int j = 0; j < model.Map.GetLength(1); j++)
                     {
+                        
                         switch (model.Map[i, j].type)
                         {
                             case ItemType.player:
