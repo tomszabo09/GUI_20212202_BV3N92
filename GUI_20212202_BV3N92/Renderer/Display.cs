@@ -1,4 +1,5 @@
 ﻿using GUI_20212202_BV3N92.Logic;
+using GUI_20212202_BV3N92.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,8 @@ namespace GUI_20212202_BV3N92.Renderer
     {
         IGameModel model;
         Size size;
+        public double rectWidth;
+        public double rectHeight;
 
         public void Resize(Size size)
         {
@@ -40,42 +43,42 @@ namespace GUI_20212202_BV3N92.Renderer
             if (model != null && size.Width>50 && size.Height>50)
             {
                 drawingContext.DrawRectangle(FloorBrush, null, new Rect(0, 0, size.Width, size.Height));
-                double rectWidth = size.Width / model.Map.GetLength(1);
-                double rectHeight = size.Height / model.Map.GetLength(0);
+                rectWidth = size.Width / model.Map.GetLength(1);
+                rectHeight = size.Height / model.Map.GetLength(0);
                 for (int i = 0; i < model.Map.GetLength(0); i++)
                 {
                     for (int j = 0; j < model.Map.GetLength(1); j++)
                     {
-                        switch (model.Map[i, j])
+                        switch (model.Map[i, j].type)
                         {
-                            case GameLogic.MapItem.player:
-                                drawingContext.DrawRectangle(PlayerBrush, null, new Rect(rectWidth * j, rectHeight * i, rectWidth, rectHeight));
+                            case ItemType.player:
+                                drawingContext.DrawRectangle(PlayerBrush, null, model.Map[i,j].CalcArea());
                                 break;
-                            case GameLogic.MapItem.wall:
-                                drawingContext.DrawRectangle(WallBrush, null, new Rect(rectWidth * j, rectHeight * i, rectWidth, rectHeight));
+                            case ItemType.wall:
+                                drawingContext.DrawRectangle(WallBrush, null, model.Map[i, j].CalcArea());
                                 break;
-                            case GameLogic.MapItem.floor:
+                            case ItemType.floor:
                                 break;
-                            case GameLogic.MapItem.ammo:
-                                drawingContext.DrawRectangle(AmmoBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                            case ItemType.ammo:
+                                drawingContext.DrawRectangle(AmmoBrush, null, model.Map[i, j].CalcArea());
                                 break;
-                            case GameLogic.MapItem.opponent:
-                                drawingContext.DrawRectangle(OpponentBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                            case ItemType.opponent:
+                                drawingContext.DrawRectangle(OpponentBrush, null, model.Map[i, j].CalcArea());
                                 break;
-                            case GameLogic.MapItem.brick:
-                                drawingContext.DrawRectangle(BrickBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                            case ItemType.brick:
+                                drawingContext.DrawRectangle(BrickBrush, null, model.Map[i, j].CalcArea());
                                 break;
-                            case GameLogic.MapItem.health:
-                                drawingContext.DrawRectangle(HealthBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                            case ItemType.health:
+                                drawingContext.DrawRectangle(HealthBrush, null, model.Map[i, j].CalcArea());
                                 break;
-                            case GameLogic.MapItem.locked:
-                                drawingContext.DrawRectangle(LockedBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                            case ItemType.locked:
+                                drawingContext.DrawRectangle(LockedBrush, null, model.Map[i, j].CalcArea());
                                 break;
-                            case GameLogic.MapItem.exit:
-                                drawingContext.DrawRectangle(ExitBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                            case ItemType.exit:
+                                drawingContext.DrawRectangle(ExitBrush, null, model.Map[i, j].CalcArea());
                                 break;
-                            case GameLogic.MapItem.finish:
-                                drawingContext.DrawRectangle(FinishBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                            case ItemType.finish:
+                                drawingContext.DrawRectangle(FinishBrush, null, model.Map[i, j].CalcArea());
                                 break;
                             default:
                                 break;

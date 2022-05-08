@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI_20212202_BV3N92"
         xmlns:renderer="clr-namespace:GUI_20212202_BV3N92.Renderer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
+        Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
     <Canvas x:Name="canvas" Background="Black">
         <renderer:Display x:Name="display"/>
     </Canvas>

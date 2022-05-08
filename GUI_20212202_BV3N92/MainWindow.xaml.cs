@@ -21,9 +21,11 @@ namespace GUI_20212202_BV3N92
     /// </summary>
     public partial class MainWindow : Window
     {
+        GameLogic logic;
         public MainWindow()
         {
             InitializeComponent();
+            logic = new GameLogic(this);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -33,11 +35,15 @@ namespace GUI_20212202_BV3N92
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            GameLogic logic = new GameLogic(this);
+        {          
             display.SetupModel(logic);
             display.Resize(new Size(canvas.ActualWidth, canvas.ActualHeight));
             display.InvalidateVisual();           
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            
         }
     }
 }
