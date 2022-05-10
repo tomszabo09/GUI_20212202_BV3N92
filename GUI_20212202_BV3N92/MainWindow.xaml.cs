@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace GUI_20212202_BV3N92
 {
@@ -38,8 +39,17 @@ namespace GUI_20212202_BV3N92
         {
             logic = new GameLogic(this, display.size);
             display.SetupModel(logic);
+            DispatcherTimer dt = new DispatcherTimer();
+            dt.Interval = TimeSpan.FromMilliseconds(20);
+            dt.Tick += Dt_Tick;
+            dt.Start();
             display.Resize(new Size(canvas.ActualWidth, canvas.ActualHeight));
             display.InvalidateVisual();           
+        }
+
+        private void Dt_Tick(object sender, EventArgs e)
+        {
+            logic.TimeStep();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -59,7 +69,7 @@ namespace GUI_20212202_BV3N92
                     logic.Control(GameLogic.Controls.moveRight);
                     break;                
                 case Key.Space:
-                    logic.Control(GameLogic.Controls.shoot);
+                     logic.Control(GameLogic.Controls.shoot);
                     break;
 
             }
