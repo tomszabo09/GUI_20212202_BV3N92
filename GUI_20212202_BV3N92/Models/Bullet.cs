@@ -9,29 +9,37 @@ using System.Windows;
 
 namespace GUI_20212202_BV3N92.Models
 {
-    public class Bullet
+    public class Bullet:MapItem
     {
-        public Bullet(System.Drawing.Point center, Vector speed)
+        public Bullet(double X,double Y, double speed, double displayWidth,double displayHeight,Directions dir)
         {
-            Center = center;
+            this.X = X;
+            this.Y = Y;
             Speed = speed;
+            this.displayWidth = displayWidth;
+            this.displayHeight = displayHeight;
+            this.Direction = dir;
         }
-
-        public System.Drawing.Point Center { get; set; }
-
-        public Vector Speed { get; set; }
-
-        public bool Move(System.Windows.Size area)
+        public Directions Direction { get; set; }
+        public double Speed;       
+        public void Move()
         {
-            System.Drawing.Point newCenter = new System.Drawing.Point(Center.X + (int)Speed.X, Center.Y + (int)Speed.Y);
-            if(newCenter.X>=0&& newCenter.X <= area.Width && newCenter.Y >= 0 && newCenter.Y <= area.Height)
+            switch (this.Direction)
             {
-                Center=newCenter;
-                return true;
-            }
-            else
-            {
-                return false;
+                case Directions.up:
+                    this.Y -= 20;                    
+                    break;
+                case Directions.left:
+                    this.X -= 20;                   
+                    break;
+                case Directions.down:
+                    this.Y += 20;
+                    break;
+                case Directions.right:
+                    this.X += 20;
+                    break;
+                default:
+                    break;
             }
         }
     }
