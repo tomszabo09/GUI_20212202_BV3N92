@@ -30,7 +30,64 @@ namespace GUI_20212202_BV3N92.Logic
         private Queue<string> levels;
         private string currentLevel;
 
+
         public MapItem[,] Map { get; set; }
+        public Player Player { get => player; }
+        public string CurrentLevel { get => currentLevel.Substring(10, 2); }
+
+        public GameLogic()
+        {
+            string[] lvls = Directory.GetFiles(Path.Combine("levels"), "*.lvl");
+            string saved;
+
+            try
+            {
+                saved = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "saved"), "*.sav").First();
+            }
+            catch (Exception)
+            {
+
+                saved = null;
+            }
+
+            player = new Player();
+            opponents = new List<Opponent>();
+            levels = new Queue<string>();
+
+            if (saved != null)
+            {
+                //TODO: too much // in currentLvl
+                StreamReader sr = new StreamReader(saved);
+                string currentLvl = sr.ReadLine();
+
+                int i = 0;
+                while (i < lvls.Length && !lvls[i].Contains(currentLvl))
+                {
+                    i++;
+                }
+                while (i < lvls.Length)
+                {
+                    levels.Enqueue(lvls[i]);
+                }
+
+                sr.Close();
+
+                if (levels.Count > 0)
+                    currentLevel = levels.Dequeue();
+                LoadLevel(saved, true);
+            }
+            else
+            {
+                foreach (var lvl in lvls)
+                {
+                    levels.Enqueue(lvl);
+                }
+
+                if (levels.Count > 0)
+                    currentLevel = levels.Dequeue();
+                LoadLevel(currentLevel, false);
+            }
+        }
 
         public GameLogic(MainWindow window)
         {
@@ -60,7 +117,7 @@ namespace GUI_20212202_BV3N92.Logic
                 string currentLvl = sr.ReadLine();
 
                 int i = 0;
-                while (!lvls[i].Contains(currentLvl) && i < lvls.Length)
+                while (i < lvls.Length && !lvls[i].Contains(currentLvl))
                 {
                     i++;
                 }

@@ -41,7 +41,7 @@ namespace GUI_20212202_BV3N92.Renderer
             {
                 drawingContext.DrawRectangle(FloorBrush, null, new Rect(0, 0, size.Width, size.Height));
                 double rectWidth = size.Width / model.Map.GetLength(1);
-                double rectHeight = size.Height / model.Map.GetLength(0);
+                double rectHeight = size.Height / (model.Map.GetLength(0) + 1);
                 for (int i = 0; i < model.Map.GetLength(0); i++)
                 {
                     for (int j = 0; j < model.Map.GetLength(1); j++)
@@ -49,33 +49,33 @@ namespace GUI_20212202_BV3N92.Renderer
                         switch (model.Map[i, j])
                         {
                             case GameLogic.MapItem.player:
-                                drawingContext.DrawRectangle(PlayerBrush, null, new Rect(rectWidth * j, rectHeight * i, rectWidth, rectHeight));
+                                drawingContext.DrawRectangle(PlayerBrush, null, new Rect(rectWidth * j, rectHeight * (i+1), rectWidth, rectHeight));
                                 break;
                             case GameLogic.MapItem.wall:
-                                drawingContext.DrawRectangle(WallBrush, null, new Rect(rectWidth * j, rectHeight * i, rectWidth, rectHeight));
+                                drawingContext.DrawRectangle(WallBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectWidth, rectHeight));
                                 break;
                             case GameLogic.MapItem.floor:
                                 break;
                             case GameLogic.MapItem.ammo:
-                                drawingContext.DrawRectangle(AmmoBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                                drawingContext.DrawRectangle(AmmoBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
                                 break;
                             case GameLogic.MapItem.opponent:
-                                drawingContext.DrawRectangle(OpponentBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                                drawingContext.DrawRectangle(OpponentBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
                                 break;
                             case GameLogic.MapItem.brick:
-                                drawingContext.DrawRectangle(BrickBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                                drawingContext.DrawRectangle(BrickBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
                                 break;
                             case GameLogic.MapItem.health:
-                                drawingContext.DrawRectangle(HealthBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                                drawingContext.DrawRectangle(HealthBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
                                 break;
                             case GameLogic.MapItem.locked:
-                                drawingContext.DrawRectangle(LockedBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                                drawingContext.DrawRectangle(LockedBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
                                 break;
                             case GameLogic.MapItem.exit:
-                                drawingContext.DrawRectangle(ExitBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                                drawingContext.DrawRectangle(ExitBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
                                 break;
                             case GameLogic.MapItem.finish:
-                                drawingContext.DrawRectangle(FinishBrush, null, new Rect(rectWidth * j, rectHeight * i, rectHeight, rectWidth));
+                                drawingContext.DrawRectangle(FinishBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
                                 break;
                             default:
                                 break;

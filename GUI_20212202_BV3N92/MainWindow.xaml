@@ -5,9 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI_20212202_BV3N92"
         xmlns:renderer="clr-namespace:GUI_20212202_BV3N92.Renderer"
+        xmlns:logic="clr-namespace:GUI_20212202_BV3N92.Logic"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
+    <Window.Resources>
+        <logic:GameLogic x:Key="logic"/>
+        <renderer:Display x:Key="display"/>
+    </Window.Resources>
     <Canvas x:Name="canvas" Background="Black">
         <renderer:Display x:Name="display"/>
+        <Grid DataContext="{StaticResource logic}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+            <Label Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding Player.Health}" ContentStringFormat="Health: {0}" Grid.Column="0"/>
+            <Label Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding Player.Ammo}" ContentStringFormat="Ammo: {0}" Grid.Column="1"/>
+            <Label Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding CurrentLevel}" ContentStringFormat="Level: {0}" Grid.Column="2"/>
+        </Grid>
     </Canvas>
 </Window>
