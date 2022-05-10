@@ -39,6 +39,7 @@ namespace GUI_20212202_BV3N92.Renderer
         public Brush LockedBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "lock.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush ExitBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "exit.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush FinishBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "finish.bmp"), UriKind.RelativeOrAbsolute))); } }
+        public Brush BulletBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images","bullet.bmp"), UriKind.RelativeOrAbsolute))); } }
         #endregion
         protected override void OnRender(DrawingContext drawingContext)
         {
@@ -48,49 +49,46 @@ namespace GUI_20212202_BV3N92.Renderer
                 drawingContext.DrawRectangle(FloorBrush, null, new Rect(0, 0, size.Width, size.Height));
                 rectWidth = size.Width / model.Map.GetLength(1);
                 rectHeight = size.Height / model.Map.GetLength(0);
-                for (int i = 0; i < model.Map.GetLength(0); i++)
+                model.player.Calcangle();
+                
+                foreach (var item in model.walls)
                 {
-                    for (int j = 0; j < model.Map.GetLength(1); j++)
-                    {
-                        
-                        switch (model.Map[i, j].type)
-                        {
-                            case ItemType.player:
-                                model.player.Calcangle();
-                                var transform =new RotateTransform(model.player.Angle, model.player.displayWidth/2,model.player.displayHeight/2);
-                                PlayerBrush.Transform = transform;
-                                drawingContext.DrawRectangle(PlayerBrush, null, model.Map[i,j].CalcArea());
-                                break;
-                            case ItemType.wall:
-                                drawingContext.DrawRectangle(WallBrush, null, model.Map[i, j].CalcArea());
-                                break;
-                            case ItemType.floor:
-                                break;
-                            case ItemType.ammo:
-                                drawingContext.DrawRectangle(AmmoBrush, null, model.Map[i, j].CalcArea());
-                                break;
-                            case ItemType.opponent:
-                                drawingContext.DrawRectangle(OpponentBrush, null, model.Map[i, j].CalcArea());
-                                break;
-                            case ItemType.brick:
-                                drawingContext.DrawRectangle(BrickBrush, null, model.Map[i, j].CalcArea());
-                                break;
-                            case ItemType.health:
-                                drawingContext.DrawRectangle(HealthBrush, null, model.Map[i, j].CalcArea());
-                                break;
-                            case ItemType.locked:
-                                drawingContext.DrawRectangle(LockedBrush, null, model.Map[i, j].CalcArea());
-                                break;
-                            case ItemType.exit:
-                                drawingContext.DrawRectangle(ExitBrush, null, model.Map[i, j].CalcArea());
-                                break;
-                            case ItemType.finish:
-                                drawingContext.DrawRectangle(FinishBrush, null, model.Map[i, j].CalcArea());
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                    drawingContext.DrawRectangle(WallBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.bricks)
+                {
+                    drawingContext.DrawRectangle(BrickBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.ammos)
+                {
+                    drawingContext.DrawRectangle(AmmoBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.opponents)
+                {
+                    drawingContext.DrawRectangle(OpponentBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.healths)
+                {
+                    drawingContext.DrawRectangle(HealthBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.locks)
+                {
+                    drawingContext.DrawRectangle(LockedBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.exits)
+                {
+                    drawingContext.DrawRectangle(ExitBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.finishes)
+                {
+                    drawingContext.DrawRectangle(FinishBrush, null, item.CalcArea());
+                }
+                drawingContext.PushTransform(new RotateTransform(model.player.Angle, model.player.X+model.player.displayWidth/2, model.player.Y+model.player.displayHeight/2));
+                drawingContext.DrawRectangle(PlayerBrush, null, model.player.CalcArea());
+                drawingContext.Pop();
+                foreach (var item in model.bullets)
+                {
+                    drawingContext.DrawRectangle(BulletBrush, null, item.CalcArea());
                 }
 
             }
