@@ -1,4 +1,5 @@
 ﻿using GUI_20212202_BV3N92.Logic;
+using GUI_20212202_BV3N92.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +15,9 @@ namespace GUI_20212202_BV3N92.Renderer
     public class Display : FrameworkElement
     {
         IGameModel model;
-        Size size;
+        public Size size;
+        public double rectWidth;
+        public double rectHeight;
 
         public void Resize(Size size)
         {
@@ -23,7 +26,9 @@ namespace GUI_20212202_BV3N92.Renderer
         public void SetupModel(IGameModel model)
         {
             this.model = model;
+            this.model.Changed+=(sender,eventargs)=>this.InvalidateVisual();
         }
+        #region brushes
         public Brush FloorBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "blank.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush PlayerBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "player.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush WallBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "wall.bmp"), UriKind.RelativeOrAbsolute))); } }
@@ -34,54 +39,59 @@ namespace GUI_20212202_BV3N92.Renderer
         public Brush LockedBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "lock.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush ExitBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "exit.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush FinishBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "finish.bmp"), UriKind.RelativeOrAbsolute))); } }
+        public Brush BulletBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images","bullet.bmp"), UriKind.RelativeOrAbsolute))); } }
+        #endregion
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
             if (model != null && size.Width>50 && size.Height>50)
             {
                 drawingContext.DrawRectangle(FloorBrush, null, new Rect(0, 0, size.Width, size.Height));
-                double rectWidth = size.Width / model.Map.GetLength(1);
-                double rectHeight = size.Height / (model.Map.GetLength(0) + 1);
-                for (int i = 0; i < model.Map.GetLength(0); i++)
+
+                rectWidth = size.Width / model.Map.GetLength(1);
+                rectHeight = size.Height / model.Map.GetLength(0);
+                model.player.Calcangle();
+                
+                foreach (var item in model.walls)
                 {
-                    for (int j = 0; j < model.Map.GetLength(1); j++)
-                    {
-                        switch (model.Map[i, j])
-                        {
-                            case GameLogic.MapItem.player:
-                                drawingContext.DrawRectangle(PlayerBrush, null, new Rect(rectWidth * j, rectHeight * (i+1), rectWidth, rectHeight));
-                                break;
-                            case GameLogic.MapItem.wall:
-                                drawingContext.DrawRectangle(WallBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectWidth, rectHeight));
-                                break;
-                            case GameLogic.MapItem.floor:
-                                break;
-                            case GameLogic.MapItem.ammo:
-                                drawingContext.DrawRectangle(AmmoBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
-                                break;
-                            case GameLogic.MapItem.opponent:
-                                drawingContext.DrawRectangle(OpponentBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
-                                break;
-                            case GameLogic.MapItem.brick:
-                                drawingContext.DrawRectangle(BrickBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
-                                break;
-                            case GameLogic.MapItem.health:
-                                drawingContext.DrawRectangle(HealthBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
-                                break;
-                            case GameLogic.MapItem.locked:
-                                drawingContext.DrawRectangle(LockedBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
-                                break;
-                            case GameLogic.MapItem.exit:
-                                drawingContext.DrawRectangle(ExitBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
-                                break;
-                            case GameLogic.MapItem.finish:
-                                drawingContext.DrawRectangle(FinishBrush, null, new Rect(rectWidth * j, rectHeight * (i + 1), rectHeight, rectWidth));
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                    drawingContext.DrawRectangle(WallBrush, null, item.CalcArea());
                 }
+                foreach (var item in model.bricks)
+                {
+                    drawingContext.DrawRectangle(BrickBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.ammos)
+                {
+                    drawingContext.DrawRectangle(AmmoBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.opponents)
+                {
+                    drawingContext.DrawRectangle(OpponentBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.healths)
+                {
+                    drawingContext.DrawRectangle(HealthBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.locks)
+                {
+                    drawingContext.DrawRectangle(LockedBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.exits)
+                {
+                    drawingContext.DrawRectangle(ExitBrush, null, item.CalcArea());
+                }
+                foreach (var item in model.finishes)
+                {
+                    drawingContext.DrawRectangle(FinishBrush, null, item.CalcArea());
+                }
+                drawingContext.PushTransform(new RotateTransform(model.player.Angle, model.player.X+model.player.displayWidth/2, model.player.Y+model.player.displayHeight/2));
+                drawingContext.DrawRectangle(PlayerBrush, null, model.player.CalcArea());
+                drawingContext.Pop();
+                foreach (var item in model.bullets)
+                {
+                    drawingContext.DrawRectangle(BulletBrush, null, item.CalcArea());
+                }
+
             }
         }
     }

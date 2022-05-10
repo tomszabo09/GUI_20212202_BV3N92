@@ -10,11 +10,4 @@ namespace GUI_20212202_BV3N92.Models
     {
         up, left, down, right
     }
-    public interface IModel
-    {
-        int[] Position { get; set; }
-        Directions Direction { get; set; }
-
-        void Shoot(Directions direction);
-    }
 }

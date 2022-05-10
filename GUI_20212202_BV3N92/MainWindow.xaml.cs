@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace GUI_20212202_BV3N92
 {
@@ -21,9 +22,11 @@ namespace GUI_20212202_BV3N92
     /// </summary>
     public partial class MainWindow : Window
     {
+        GameLogic logic;
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -34,10 +37,42 @@ namespace GUI_20212202_BV3N92
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GameLogic logic = new GameLogic(this);
+            logic = new GameLogic(this, display.size);
             display.SetupModel(logic);
+            DispatcherTimer dt = new DispatcherTimer();
+            dt.Interval = TimeSpan.FromMilliseconds(20);
+            dt.Tick += Dt_Tick;
+            dt.Start();
             display.Resize(new Size(canvas.ActualWidth, canvas.ActualHeight));
             display.InvalidateVisual();           
+        }
+
+        private void Dt_Tick(object sender, EventArgs e)
+        {
+            logic.TimeStep();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.W:
+                    logic.Control(GameLogic.Controls.moveUp);
+                    break;
+                case Key.S:
+                    logic.Control(GameLogic.Controls.moveDown);
+                    break;
+                case Key.A:
+                    logic.Control(GameLogic.Controls.moveLeft);
+                    break;
+                case Key.D:
+                    logic.Control(GameLogic.Controls.moveRight);
+                    break;                
+                case Key.Space:
+                     logic.Control(GameLogic.Controls.shoot);
+                    break;
+
+            }
         }
     }
 }
