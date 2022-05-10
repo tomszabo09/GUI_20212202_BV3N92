@@ -15,7 +15,7 @@ namespace GUI_20212202_BV3N92.Models
         public double displayWidth { get; set; }
         public double displayHeight { get; set; }
         public ItemType type { get; set; }
-        public Rect CalcArea()
+        public virtual Rect CalcArea()
         {
             return new Rect(X, Y, displayWidth, displayHeight);
         }
