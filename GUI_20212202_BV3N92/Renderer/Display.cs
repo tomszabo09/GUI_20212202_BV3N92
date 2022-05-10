@@ -47,6 +47,7 @@ namespace GUI_20212202_BV3N92.Renderer
             if (model != null && size.Width>50 && size.Height>50)
             {
                 drawingContext.DrawRectangle(FloorBrush, null, new Rect(0, 0, size.Width, size.Height));
+
                 rectWidth = size.Width / model.Map.GetLength(1);
                 rectHeight = size.Height / model.Map.GetLength(0);
                 model.player.Calcangle();
