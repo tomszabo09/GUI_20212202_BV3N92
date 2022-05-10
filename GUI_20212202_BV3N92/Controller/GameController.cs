@@ -33,18 +33,6 @@ namespace GUI_20212202_BV3N92.Controller
                 case Key.D:
                     control.Control(GameLogic.Controls.moveRight);
                     break;
-                case Key.Up:
-                    control.Control(GameLogic.Controls.rotateUp);
-                    break;
-                case Key.Left:
-                    control.Control(GameLogic.Controls.rotateLeft);
-                    break;
-                case Key.Down:
-                    control.Control(GameLogic.Controls.rotateDown);
-                    break;
-                case Key.Right:
-                    control.Control(GameLogic.Controls.rotateRight);
-                    break;
                 case Key.Space:
                     control.Control(GameLogic.Controls.shoot);
                     break;

@@ -17,25 +17,26 @@ namespace GUI_20212202_BV3N92.Logic
     }
     public class GameLogic : IGameModel
     {
-
+        public event EventHandler Changed;
         MainWindow mainWindow;
-        Size size;
+        System.Windows.Size size;
         public double rectWidth;
         public double rectHeight;
 
         public enum Controls
         {
-            moveUp, moveLeft, moveDown, moveRight, rotateUp, rotateLeft, rotateDown, rotateRight, shoot, menu
+            moveUp, moveLeft, moveDown, moveRight, shoot, menu
         }
 
-        private Player player;
-        private List<Opponent> opponents;
+        public Player player { get; set; }
+        public List<Opponent> opponents;
         private Queue<string> levels;
         private string currentLevel;
+        public List<Bullet> bullets { get; set; }
 
         public MapItem[,] Map { get; set; }
 
-        public GameLogic(MainWindow window, Size size)
+        public GameLogic(MainWindow window, System.Windows.Size size)
         {
             this.mainWindow = window;
             this.size = size;
@@ -55,6 +56,7 @@ namespace GUI_20212202_BV3N92.Logic
             player = new Player();
             opponents = new List<Opponent>();
             levels = new Queue<string>();
+            bullets = new List<Bullet>();
 
             if (saved != null)
             {
@@ -210,6 +212,53 @@ namespace GUI_20212202_BV3N92.Logic
         //    // TODO: implement opponent shooting at player
         //}
 
+        public void Control(Controls control)
+        {
+            switch (control)
+            {
+                case Controls.moveUp:
+                    player.Y -= 10;
+                    player.Direction = Directions.up;
+                    break;
+                case Controls.moveLeft:
+                    player.X -= 10;
+                    player.Direction=Directions.left;
+                    break;
+                case Controls.moveDown:
+                    player.Y += 10;
+                    player.Direction=Directions.down;
+                    break;
+                case Controls.moveRight:
+                    player.X += 10;
+                    player.Direction = Directions.right;
+                    break;                
+                case Controls.shoot:
+                    NewShoot();
+                    break;
+                case Controls.menu:
+                    break;
+                default:
+                    break;
+            }
+            Changed?.Invoke(this, null);
+        }
+
+        private void NewShoot()
+        {
+            bullets.Add(new Bullet(new System.Drawing.Point((int)player.displayWidth / 2,(int)player.displayHeight/2),new Vector(20,20)));
+        }
+        public void TimeStep()
+        {
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                bool inside = bullets[i].Move(size);
+                if (!inside)
+                {
+                    bullets.RemoveAt(i);
+                }
+            }
+            Changed?.Invoke(this, null);
+        }
         private void LoadLevel(string lvlPath, bool saved)
         {
             if (saved)
@@ -333,13 +382,15 @@ namespace GUI_20212202_BV3N92.Logic
                         switch (lines[i + 2][j])
                         {
                             case 'p':
-                                Map[i, j] = new Player()
+                                var pl = new Player()
                                 {
                                     X = rectWidth * j,
                                     Y = rectHeight * i,
                                     displayWidth = rectWidth,
                                     displayHeight = rectHeight
                                 };
+                                Map[i, j] = pl;
+                                player = pl;
                                 break;
                             case 'w':
                                 Map[i, j] = new Wall()

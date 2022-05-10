@@ -26,7 +26,9 @@ namespace GUI_20212202_BV3N92.Renderer
         public void SetupModel(IGameModel model)
         {
             this.model = model;
+            this.model.Changed+=(sender,eventargs)=>this.InvalidateVisual();
         }
+        #region brushes
         public Brush FloorBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "blank.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush PlayerBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "player.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush WallBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "wall.bmp"), UriKind.RelativeOrAbsolute))); } }
@@ -37,6 +39,7 @@ namespace GUI_20212202_BV3N92.Renderer
         public Brush LockedBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "lock.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush ExitBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "exit.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush FinishBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "finish.bmp"), UriKind.RelativeOrAbsolute))); } }
+        #endregion
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
@@ -53,6 +56,9 @@ namespace GUI_20212202_BV3N92.Renderer
                         switch (model.Map[i, j].type)
                         {
                             case ItemType.player:
+                                model.player.Calcangle();
+                                var transform =new RotateTransform(model.player.Angle, model.player.displayWidth/2,model.player.displayHeight/2);
+                                PlayerBrush.Transform = transform;
                                 drawingContext.DrawRectangle(PlayerBrush, null, model.Map[i,j].CalcArea());
                                 break;
                             case ItemType.wall:
@@ -86,6 +92,7 @@ namespace GUI_20212202_BV3N92.Renderer
                         }
                     }
                 }
+
             }
         }
     }

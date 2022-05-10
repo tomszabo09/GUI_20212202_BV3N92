@@ -44,7 +44,25 @@ namespace GUI_20212202_BV3N92
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            
+            switch (e.Key)
+            {
+                case Key.W:
+                    logic.Control(GameLogic.Controls.moveUp);
+                    break;
+                case Key.S:
+                    logic.Control(GameLogic.Controls.moveDown);
+                    break;
+                case Key.A:
+                    logic.Control(GameLogic.Controls.moveLeft);
+                    break;
+                case Key.D:
+                    logic.Control(GameLogic.Controls.moveRight);
+                    break;                
+                case Key.Space:
+                    logic.Control(GameLogic.Controls.shoot);
+                    break;
+
+            }
         }
     }
 }
