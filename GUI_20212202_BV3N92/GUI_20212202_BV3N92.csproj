@@ -11,6 +11,7 @@
     <None Remove="Images\ammosingle.bmp" />
     <None Remove="Images\blank.bmp" />
     <None Remove="Images\brick.bmp" />
+    <None Remove="Images\bullet.bmp" />
     <None Remove="Images\exit.bmp" />
     <None Remove="Images\finish.bmp" />
     <None Remove="Images\hp.bmp" />
@@ -33,6 +34,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\brick.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\bullet.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\exit.bmp">
