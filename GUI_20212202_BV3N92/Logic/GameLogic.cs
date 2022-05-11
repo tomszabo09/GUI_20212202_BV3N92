@@ -1,6 +1,5 @@
 ﻿using GUI_20212202_BV3N92.Models;
 using GUI_20212202_BV3N92.Windows;
-using GUI_20212202_BV3N92.Windows.Ending;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -33,11 +32,10 @@ namespace GUI_20212202_BV3N92.Logic
 
         private string currentLevel;
 
-
         public Player player { get; set; } = new Player();
         public List<Opponent> opponents { get; set; }
         public List<Wall> walls { get; set; }
-        public List <Health> healths { get; set; }
+        public List<Health> healths { get; set; }
         public List<Ammo> ammos { get; set; }
         public List<Brick> bricks { get; set; }
         public List<Exit> exits { get; set; }
@@ -58,13 +56,11 @@ namespace GUI_20212202_BV3N92.Logic
             string[] lvls = Directory.GetFiles(Path.Combine("levels"), "*.lvl");
             bool saved = File.Exists("save.sav");
 
-
             opponents = new List<Opponent>();
             levels = new Queue<string>();
 
             if (saved)
             {
-                //TODO: too much // in currentLvl
                 StreamReader sr = new StreamReader("save.sav");
                 string currentLvl = sr.ReadLine();
 
@@ -78,11 +74,11 @@ namespace GUI_20212202_BV3N92.Logic
                     levels.Enqueue(lvls[i]);
                     i++;
                 }
-
                 sr.Close();
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
+
                 LoadLevel(currentLvl);
             }
             else
@@ -94,6 +90,7 @@ namespace GUI_20212202_BV3N92.Logic
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
+
                 LoadLevel(currentLevel);
             }
         }
@@ -102,17 +99,14 @@ namespace GUI_20212202_BV3N92.Logic
         {
             this.mainWindow = window;
             this.size = size;
-            levels = new Queue<string>();
             string[] lvls = Directory.GetFiles(Path.Combine("levels"), "*.lvl");
             bool saved = File.Exists("save.sav");
-
 
             opponents = new List<Opponent>();
             levels = new Queue<string>();
 
             if (saved)
             {
-                //TODO: too much // in currentLvl
                 StreamReader sr = new StreamReader("save.sav");
                 string currentLvl = sr.ReadLine();
 
@@ -126,11 +120,11 @@ namespace GUI_20212202_BV3N92.Logic
                     levels.Enqueue(lvls[i]);
                     i++;
                 }
-
                 sr.Close();
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
+
                 LoadLevel(currentLvl);
             }
             else
@@ -142,6 +136,7 @@ namespace GUI_20212202_BV3N92.Logic
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
+
                 LoadLevel(currentLevel);
             }
         }
@@ -154,7 +149,7 @@ namespace GUI_20212202_BV3N92.Logic
                     if (Collides(Directions.up))
                     {
                         break;
-                    }                   
+                    }
                     player.Y -= 10;
                     player.Direction = Directions.up;
                     break;
@@ -164,7 +159,7 @@ namespace GUI_20212202_BV3N92.Logic
                         break;
                     }
                     player.X -= 10;
-                    player.Direction=Directions.left;
+                    player.Direction = Directions.left;
                     break;
                 case Controls.moveDown:
                     if (Collides(Directions.down))
@@ -172,7 +167,7 @@ namespace GUI_20212202_BV3N92.Logic
                         break;
                     }
                     player.Y += 10;
-                    player.Direction=Directions.down;
+                    player.Direction = Directions.down;
                     break;
                 case Controls.moveRight:
                     if (Collides(Directions.right))
@@ -181,13 +176,13 @@ namespace GUI_20212202_BV3N92.Logic
                     }
                     player.X += 10;
                     player.Direction = Directions.right;
-                    break;                
+                    break;
                 case Controls.shoot:
                     if (player.Ammo > 0)
                     {
                         player.Ammo--;
                         mainWindow.ammo.Content = player.Ammo;
-                        NewShoot(player.Direction);
+                        NewShoot();
                     }
                     break;
                 case Controls.menu:
@@ -199,7 +194,7 @@ namespace GUI_20212202_BV3N92.Logic
                         //save
                         SaveLevel();
                     }
-                    else
+                    else if (!menu.resume)
                     {
                         //restart
                         player.Health = 3;
@@ -269,7 +264,10 @@ namespace GUI_20212202_BV3N92.Logic
             {
                 if (tmpplayer.IsColliding(item))
                 {
-                    MessageBox.Show("YOU WIN!");
+                    if (File.Exists("save.sav"))
+                        File.Delete("save.sav");
+
+                    MessageBox.Show("Congratulations, you have completed all levels!");
                     mainWindow.Close();
                     return true;
                 }
@@ -302,7 +300,8 @@ namespace GUI_20212202_BV3N92.Logic
                 Y = player.Y,
                 displayWidth = player.displayWidth,
                 displayHeight = player.displayHeight
-            };            
+            };
+
             switch (dir)
             {
                 case Directions.up:
@@ -321,7 +320,7 @@ namespace GUI_20212202_BV3N92.Logic
             }
         }
 
-        private void NewShoot(Directions dir)
+        private void NewShoot()
         {
             bullets.Add(new Bullet(player.X, player.Y, 20, player.displayWidth, player.displayHeight, player.Direction));
         }
@@ -336,6 +335,7 @@ namespace GUI_20212202_BV3N92.Logic
                     bullets.RemoveAt(i);
                 }
             }
+
             List<Lock> dellocks = new List<Lock>();
             if (opponents.Count == 0)
             {
@@ -348,7 +348,7 @@ namespace GUI_20212202_BV3N92.Logic
                     locks.Remove(item);
                 }
             }
-            
+
             Changed?.Invoke(this, null);
         }
 
@@ -436,8 +436,6 @@ namespace GUI_20212202_BV3N92.Logic
         }
         private void LoadLevel(string lvlPath)
         {
-
-
             opponents = new List<Opponent>();
             walls = new List<Wall>();
             healths = new List<Health>();
@@ -446,128 +444,125 @@ namespace GUI_20212202_BV3N92.Logic
             exits = new List<Exit>();
             finishes = new List<Finish>();
             locks = new List<Lock>();
-
             bullets = new List<Bullet>();
 
-                string[] lines = File.ReadAllLines(lvlPath);
-                Map = new MapItem[int.Parse(lines[1]), int.Parse(lines[0])];
-                rectWidth = size.Width / Map.GetLength(1);
-                rectHeight = size.Height / Map.GetLength(0);
-                for (int i = 0; i < Map.GetLength(0); i++)
+            string[] lines = File.ReadAllLines(lvlPath);
+            Map = new MapItem[int.Parse(lines[1]), int.Parse(lines[0])];
+            rectWidth = size.Width / Map.GetLength(1);
+            rectHeight = size.Height / Map.GetLength(0);
+            for (int i = 0; i < Map.GetLength(0); i++)
+            {
+                for (int j = 0; j < Map.GetLength(1); j++)
                 {
-                    for (int j = 0; j < Map.GetLength(1); j++)
+                    switch (lines[i + 2][j])
                     {
-                        switch (lines[i + 2][j])
-                        {
-                            case 'p':
-                                player.X = (rectWidth * j) + 5;
-                                player.Y = (rectHeight * i) + 5;
-                                player.displayWidth = rectWidth - 10;
-                                player.displayHeight = rectHeight - 10;
-                                Map[i, j] = player;
-                                break;
-                            case 'w':
-                                var wall = new Wall()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = wall;
-                                walls.Add(wall);
-                                break;
-                            case 'a':
-                                var ammo = new Ammo()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = ammo;
-                                ammos.Add(ammo);
-                                break;
-                            case 'o':
-                                var op = new Opponent()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = op;
-                                opponents.Add(op);
-                                break;
-                            case 'b':
-                                var brick = new Brick()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = brick;
-                                bricks.Add(brick);
-                                break;
-                            case 'h':
-                                var hp = new Health()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = hp;
-                                healths.Add(hp);
-                                break;
-                            case 'l':
-                                var locked = new Lock()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = locked;
-                                locks.Add(locked);
-                                break;
-                            case 'e':
-                                var exit = new Exit()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = exit;
-                                exits.Add(exit);
-                                break;
-                            case 'f':
-                                var finish = new Finish()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = finish;
-                                finishes.Add(finish);
-                                break;
-                            default:
-                                Map[i, j] = new Floor()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                break;
+                        case 'p':
+                            player.X = (rectWidth * j) + 5;
+                            player.Y = (rectHeight * i) + 5;
+                            player.displayWidth = rectWidth - 10;
+                            player.displayHeight = rectHeight - 10;
+                            Map[i, j] = player;
+                            break;
+                        case 'w':
+                            var wall = new Wall()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            Map[i, j] = wall;
+                            walls.Add(wall);
+                            break;
+                        case 'a':
+                            var ammo = new Ammo()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            Map[i, j] = ammo;
+                            ammos.Add(ammo);
+                            break;
+                        case 'o':
+                            var op = new Opponent()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            Map[i, j] = op;
+                            opponents.Add(op);
+                            break;
+                        case 'b':
+                            var brick = new Brick()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            Map[i, j] = brick;
+                            bricks.Add(brick);
+                            break;
+                        case 'h':
+                            var hp = new Health()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            Map[i, j] = hp;
+                            healths.Add(hp);
+                            break;
+                        case 'l':
+                            var locked = new Lock()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            Map[i, j] = locked;
+                            locks.Add(locked);
+                            break;
+                        case 'e':
+                            var exit = new Exit()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            Map[i, j] = exit;
+                            exits.Add(exit);
+                            break;
+                        case 'f':
+                            var finish = new Finish()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            Map[i, j] = finish;
+                            finishes.Add(finish);
+                            break;
+                        default:
+                            Map[i, j] = new Floor()
+                            {
+                                X = rectWidth * j,
+                                Y = rectHeight * i,
+                                displayWidth = rectWidth,
+                                displayHeight = rectHeight
+                            };
+                            break;
                     }
                 }
-                    
             }
-                ;
         }
 
         private void SaveLevel()
@@ -575,7 +570,7 @@ namespace GUI_20212202_BV3N92.Logic
             StreamWriter sw = new StreamWriter("save.sav");
             sw.WriteLine(currentLevel);
             sw.Close();
-        }       
+        }
 
         private void OnDeath(string currentLevel)
         {
