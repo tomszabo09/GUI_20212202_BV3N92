@@ -31,7 +31,7 @@ namespace GUI_20212202_BV3N92.Logic
 
         private string currentLevel;
 
-        public Player player { get; set; }
+        public Player player { get; set; } = new Player();
         public List<Opponent> opponents { get; set; }
         public List<Wall> walls { get; set; }
         public List <Health> healths { get; set; }
@@ -65,7 +65,6 @@ namespace GUI_20212202_BV3N92.Logic
                 saved = null;
             }
 
-            player = new Player();
             opponents = new List<Opponent>();
             levels = new Queue<string>();
 
@@ -202,7 +201,7 @@ namespace GUI_20212202_BV3N92.Logic
                     break;
                 case Controls.menu:
                     MenuWindow menu = new MenuWindow(mainWindow);
-                    menu.ShowDialog();
+                    //menu.ShowDialog();
 
                     if (menu.ShowDialog() == true)
                     {
@@ -212,7 +211,9 @@ namespace GUI_20212202_BV3N92.Logic
                     else
                     {
                         //restart
-                        GameLogic restart = new GameLogic(mainWindow, size);
+                        player.Health = 3;
+                        player.Ammo = 3;
+                        LoadLevel(currentLevel, false);
                     }
                     break;
                 default:
@@ -243,7 +244,7 @@ namespace GUI_20212202_BV3N92.Logic
             {
                 if (tmpplayer.IsColliding(item))
                 {
-                    player.Ammo += 3;
+                    player.Ammo += 5;
                     ammos.Remove(item);
                     return true;
                 }
@@ -288,7 +289,7 @@ namespace GUI_20212202_BV3N92.Logic
                 if (tmpplayer.IsColliding(item))
                 {
                     opponents.Remove(item);
-                    player.Health--;
+                    OnDeath(currentLevel);
                     return true;
                 }
             }
@@ -303,8 +304,7 @@ namespace GUI_20212202_BV3N92.Logic
                 X = player.X,
                 Y = player.Y,
                 displayWidth = player.displayWidth,
-                displayHeight = player.displayHeight,
-
+                displayHeight = player.displayHeight
             };            
             switch (dir)
             {
@@ -439,7 +439,6 @@ namespace GUI_20212202_BV3N92.Logic
         }
         private void LoadLevel(string lvlPath, bool saved)
         {
-            player = new Player();
             opponents = new List<Opponent>();
             walls = new List<Wall>();
             healths = new List<Health>();
@@ -464,15 +463,11 @@ namespace GUI_20212202_BV3N92.Logic
                         switch (lines[i + 2][j])
                         {
                             case 'p':
-                                var pl = new Player()
-                                {
-                                    X = (rectWidth * j) + 5,
-                                    Y = (rectHeight * i) + 5,
-                                    displayWidth = rectWidth - 10,
-                                    displayHeight = rectHeight - 10
-                                };
-                                Map[i, j] = pl;
-                                player = pl;
+                                player.X = (rectWidth * j) + 5;
+                                player.Y = (rectHeight * i) + 5;
+                                player.displayWidth = rectWidth - 10;
+                                player.displayHeight = rectHeight - 10;
+                                Map[i, j] = player;
                                 break;
                             case 'w':
                                 var wall = new Wall()
@@ -588,15 +583,11 @@ namespace GUI_20212202_BV3N92.Logic
                         switch (lines[i + 2][j])
                         {
                             case 'p':
-                                var pl = new Player()
-                                {
-                                    X = (rectWidth * j)+5,
-                                    Y = (rectHeight * i)+5,
-                                    displayWidth = rectWidth-10,
-                                    displayHeight = rectHeight-10
-                                };
-                                Map[i, j] = pl;
-                                player = pl;
+                                player.X = (rectWidth * j) + 5;
+                                player.Y = (rectHeight * i) + 5;
+                                player.displayWidth = rectWidth - 10;
+                                player.displayHeight = rectHeight - 10;
+                                Map[i, j] = player;
                                 break;
                             case 'w':
                                 var wall = new Wall()
@@ -705,7 +696,7 @@ namespace GUI_20212202_BV3N92.Logic
 
         private void SaveLevel()
         {
-            StreamWriter sw = new StreamWriter("saved/save.sav");
+            StreamWriter sw = new StreamWriter("save.sav");
             sw.WriteLine(currentLevel);
             sw.WriteLine(Map.GetLength(1));
             sw.WriteLine(Map.GetLength(0));     
@@ -726,11 +717,14 @@ namespace GUI_20212202_BV3N92.Logic
         {
             if (player.Health > 0)
             {
-                LoadLevel(currentLevel, false);
+                player.Health--;
             }
             else
             {
-                GameLogic restart = new GameLogic(mainWindow,size);
+                player.Health = 3;
+                player.Ammo = 3;
+                MessageBox.Show("You died! Press Ok to restart level");
+                LoadLevel(currentLevel, false);
             }
         }
     }
