@@ -365,6 +365,7 @@ namespace GUI_20212202_BV3N92.Logic
             {
                 if (bullet.IsColliding(item))
                 {
+                    healths.Remove(item);
                     return true;
                 }
             }
@@ -372,6 +373,7 @@ namespace GUI_20212202_BV3N92.Logic
             {
                 if (bullet.IsColliding(item))
                 {
+                    ammos.Remove(item);
                     return true;
                 }
             }
