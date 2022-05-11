@@ -44,6 +44,7 @@ namespace GUI_20212202_BV3N92.Windows
 
         private void b_exit_Click(object sender, RoutedEventArgs e)
         {
+            this.Close();
             window.Close();
         }
     }
