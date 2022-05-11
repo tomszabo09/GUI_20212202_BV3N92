@@ -7,13 +7,13 @@
         xmlns:renderer="clr-namespace:GUI_20212202_BV3N92.Renderer"
         xmlns:logic="clr-namespace:GUI_20212202_BV3N92.Logic"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
+        Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" WindowState="Maximized" KeyDown="Window_KeyDown">
     <Window.Resources>
         <logic:GameLogic x:Key="logic"/>
         <renderer:Display x:Key="display"/>
     </Window.Resources>
     <Canvas x:Name="canvas" Background="Black">
-        <renderer:Display x:Name="display"/>
+        <renderer:Display x:Name="display" Margin="00,30,0,0"/>
         <Grid DataContext="{StaticResource logic}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
