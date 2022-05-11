@@ -18,15 +18,18 @@ namespace GUI_20212202_BV3N92.Logic
     public class GameLogic : IGameModel
     {
         public event EventHandler Changed;
+
         MainWindow mainWindow;
+
         System.Windows.Size size;
+
         public double rectWidth;
+
         public double rectHeight;
 
-        public enum Controls
-        {
-            moveUp, moveLeft, moveDown, moveRight, shoot, menu
-        }
+        private Queue<string> levels;
+
+        private string currentLevel;
 
         public Player player { get; set; }
         public List<Opponent> opponents { get; set; }
@@ -37,15 +40,15 @@ namespace GUI_20212202_BV3N92.Logic
         public List<Exit> exits { get; set; }
         public List<Finish> finishes { get; set; }
         public List<Lock> locks { get; set; }
-
-        private Queue<string> levels;
-        private string currentLevel;
         public List<Bullet> bullets { get; set; }
-
-
         public MapItem[,] Map { get; set; }
         public Player Player { get => player; }
         public string CurrentLevel { get => currentLevel.Substring(10, 2); }
+
+        public enum Controls
+        {
+            moveUp, moveLeft, moveDown, moveRight, shoot, menu
+        }
 
         public GameLogic()
         {
@@ -105,17 +108,7 @@ namespace GUI_20212202_BV3N92.Logic
         {
             this.mainWindow = window;
             this.size = size;
-            player = new Player();
-            opponents = new List<Opponent>();
-            walls = new List<Wall>();
-            healths = new List<Health>();
-            ammos = new List<Ammo>();
-            bricks = new List<Brick>();
-            exits = new List<Exit>();
-            finishes = new List<Finish>();
-            locks = new List<Lock>();
             levels = new Queue<string>();
-            bullets = new List<Bullet>();
             string[] lvls = Directory.GetFiles(Path.Combine("levels"), "*.lvl");
             string saved;
 
@@ -128,8 +121,6 @@ namespace GUI_20212202_BV3N92.Logic
 
                 saved = null;
             }
-
-            
 
             if (saved != null)
             {
@@ -165,125 +156,6 @@ namespace GUI_20212202_BV3N92.Logic
                     LoadLevel(currentLevel, false);
             }
         }
-
-        //public void Control(Controls control)
-        //{
-        //    int i = player.Position[0];
-        //    int j = player.Position[1];
-        //    int old_i = i;
-        //    int old_j = j;
-
-        //    switch (control)
-        //    {
-        //        case Controls.moveUp:
-        //            if (i - 1 >= 0)
-        //                i--;
-        //            break;
-        //        case Controls.moveLeft:
-        //            if (j - 1 >= 0)
-        //                j--;
-        //            break;
-        //        case Controls.moveDown:
-        //            if (i + 1 < Map.GetLength(0))
-        //                i++;
-        //            break;
-        //        case Controls.moveRight:
-        //            if (j + 1 < Map.GetLength(1))
-        //                j++;
-        //            break;
-        //        case Controls.rotateUp:
-        //            player.Direction = Directions.up;
-        //            break;
-        //        case Controls.rotateLeft:
-        //            player.Direction = Directions.left;
-        //            break;
-        //        case Controls.rotateDown:
-        //            player.Direction = Directions.down;
-        //            break;
-        //        case Controls.rotateRight:
-        //            player.Direction = Directions.right;
-        //            break;
-        //        case Controls.shoot:
-        //            player.Shoot(player.Direction);
-        //            break;
-        //        case Controls.menu:
-        //            MenuWindow menu = new MenuWindow(mainWindow);
-        //            menu.ShowDialog();
-
-        //            if (menu.ShowDialog() == true)
-        //            {
-        //                //save
-        //                SaveLevel();
-        //            }
-        //            else
-        //            {
-        //                //restart
-        //                GameLogic restart = new GameLogic(mainWindow);
-        //            }
-
-        //            break;
-        //    }
-
-        //    if (control == Controls.moveUp || control == Controls.moveLeft || control == Controls.moveDown || control == Controls.moveRight)
-        //    {
-        //        if (Map[i, j] == MapItem.floor)
-        //        {
-        //            Map[i, j] = MapItem.player;
-        //            Map[old_i, old_j] = MapItem.floor;
-        //        }
-        //        if (Map[i, j] == MapItem.health)
-        //        {
-        //            if (player.Health < 3)
-        //                player.Health++;
-
-        //            Map[i, j] = MapItem.player;
-        //            Map[old_i, old_j] = MapItem.floor;
-        //        }
-        //        if (Map[i, j] == MapItem.ammo)
-        //        {
-        //            player.Ammo += 3;
-
-        //            Map[i, j] = MapItem.player;
-        //            Map[old_i, old_j] = MapItem.floor;
-        //        }
-        //        if (Map[i, j] == MapItem.exit)
-        //        {
-        //            if (levels.Count > 0)
-        //            {
-        //                LoadLevel(levels.Dequeue(), false);
-        //            }
-        //            else
-        //            {
-        //                EndingWindow ending = new EndingWindow();
-        //                ending.ShowDialog();
-
-        //                if (ending.ShowDialog() == true)
-        //                {
-        //                    //restart
-
-        //                    GameLogic restart = new GameLogic(mainWindow);
-        //                }
-        //                else
-        //                {
-        //                    //exit
-
-        //                    mainWindow.Close();
-        //                    File.Delete("save.sav");
-        //                }
-        //            }
-
-        //        }
-
-        //    }
-        //    else if (control == Controls.shoot)
-        //    {
-        //        player.Shoot(player.Direction);
-
-        //        // TODO: implement map changes upon hitting objects
-        //    }
-
-        //    // TODO: implement opponent shooting at player
-        //}
 
         public void Control(Controls control)
         {
@@ -322,14 +194,105 @@ namespace GUI_20212202_BV3N92.Logic
                     player.Direction = Directions.right;
                     break;                
                 case Controls.shoot:
-                    NewShoot(player.Direction);
+                    if (player.Ammo > 0)
+                    {
+                        player.Ammo--;
+                        NewShoot(player.Direction);
+                    }
                     break;
                 case Controls.menu:
+                    MenuWindow menu = new MenuWindow(mainWindow);
+                    menu.ShowDialog();
+
+                    if (menu.ShowDialog() == true)
+                    {
+                        //save
+                        SaveLevel();
+                    }
+                    else
+                    {
+                        //restart
+                        GameLogic restart = new GameLogic(mainWindow, size);
+                    }
                     break;
                 default:
                     break;
             }
             Changed?.Invoke(this, null);
+        }
+
+        private bool CollisionLogic(Player tmpplayer)
+        {
+            foreach (var item in walls)
+            {
+                if (tmpplayer.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in healths)
+            {
+                if (tmpplayer.IsColliding(item))
+                {
+                    player.Health++;
+                    healths.Remove(item);
+                    return true;
+                }
+            }
+            foreach (var item in ammos)
+            {
+                if (tmpplayer.IsColliding(item))
+                {
+                    player.Ammo += 3;
+                    ammos.Remove(item);
+                    return true;
+                }
+            }
+            foreach (var item in bricks)
+            {
+                if (tmpplayer.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in exits)
+            {
+                if (tmpplayer.IsColliding(item))
+                {
+                    if (levels.Count > 0)
+                    {
+                        currentLevel = levels.Dequeue();
+                        LoadLevel(currentLevel, false);
+                    }
+                    return true;
+                }
+            }
+            foreach (var item in finishes)
+            {
+                if (tmpplayer.IsColliding(item))
+                {
+                    MessageBox.Show("YOU WIN!");
+                    mainWindow.Close();
+                    return true;
+                }
+            }
+            foreach (var item in locks)
+            {
+                if (tmpplayer.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in opponents)
+            {
+                if (tmpplayer.IsColliding(item))
+                {
+                    opponents.Remove(item);
+                    player.Health--;
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool Collides(Directions dir)
@@ -347,291 +310,15 @@ namespace GUI_20212202_BV3N92.Logic
             {
                 case Directions.up:
                     tmpplayer.Y -= 10;
-                    foreach (var item in walls)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }                    
-                    foreach (var item in healths)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            player.Health++;
-                            healths.Remove(item);
-                            return true;
-                        }
-                    }              
-                    foreach (var item in ammos)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            player.Ammo += 3; 
-                            ammos.Remove(item);
-                            return true;
-                        }
-                    }                  
-                    foreach (var item in bricks)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in exits)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            if (levels.Count > 0)
-                            {
-                                currentLevel = levels.Dequeue();
-                                LoadLevel(currentLevel, false);
-                            }                              
-                            return true;
-                        }
-                    }
-                    foreach (var item in finishes)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            MessageBox.Show("YOU WIN!");
-                            mainWindow.Close();
-                            return true;
-                        }
-                    }
-                    foreach (var item in locks)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in opponents)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            opponents.Remove(item);
-                            player.Health--;
-                            return true;
-                        }
-                    }
-                    return false;
+                    return CollisionLogic(tmpplayer);
                 case Directions.left:
                     tmpplayer.X -= 10;
-                    foreach (var item in walls)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in healths)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            player.Health++;
-                            healths.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in ammos)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            player.Ammo += 3;
-                            ammos.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in bricks)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in exits)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            if (levels.Count > 0)
-                            {
-                                currentLevel = levels.Dequeue();
-                                LoadLevel(currentLevel, false);
-                            }
-                            return true;
-                        }
-                    }
-                    foreach (var item in finishes)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            MessageBox.Show("YOU WIN!");
-                            mainWindow.Close();
-                            return true;
-                        }
-                    }
-                    foreach (var item in locks)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in opponents)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            opponents.Remove(item);
-                            player.Health--;
-                            return true;
-                        }
-                    }
-                    return false;
+                    return CollisionLogic(tmpplayer);
                 case Directions.down:
                     tmpplayer.Y += 10;
-                    foreach (var item in walls)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in healths)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            player.Health++;
-                            healths.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in ammos)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            player.Ammo += 3;
-                            ammos.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in bricks)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in exits)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            if (levels.Count > 0)
-                            {
-                                currentLevel = levels.Dequeue();
-                                LoadLevel(currentLevel, false);
-                            }
-                            return true;
-                        }
-                    }
-                    foreach (var item in finishes)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            MessageBox.Show("YOU WIN!");
-                            mainWindow.Close();
-                            return true;
-                        }
-                    }
-                    foreach (var item in locks)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in opponents)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            opponents.Remove(item);
-                            player.Health--;
-                            return true;
-                        }
-                    }
-                    return false;
+                    return CollisionLogic(tmpplayer);
                 case Directions.right:
-                    foreach (var item in walls)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in healths)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            player.Health++;
-                            healths.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in ammos)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            player.Ammo += 3;
-                            ammos.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in bricks)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in exits)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            if (levels.Count > 0)
-                            {
-                                currentLevel = levels.Dequeue();
-                                LoadLevel(currentLevel, false);
-                            }
-                            return true;
-                        }
-                    }
-                    foreach (var item in finishes)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            MessageBox.Show("YOU WIN!");
-                            mainWindow.Close();
-                            return true;
-                        }
-                    }
-                    foreach (var item in locks)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in opponents)
-                    {
-                        if (tmpplayer.IsColliding(item))
-                        {
-                            opponents.Remove(item);
-                            player.Health--;
-                            return true;
-                        }
-                    }
-                    return false;
+                    return CollisionLogic(tmpplayer);
                 default:
                     return true;
             }
@@ -639,10 +326,9 @@ namespace GUI_20212202_BV3N92.Logic
 
         private void NewShoot(Directions dir)
         {
-            bullets.Add(new Bullet(player.X,player.Y,20,player.displayWidth,player.displayHeight,player.Direction));                                    
-            
-            
+            bullets.Add(new Bullet(player.X, player.Y, 20, player.displayWidth, player.displayHeight, player.Direction));
         }
+
         public void TimeStep()
         {
             for (int i = 0; i < bullets.Count; i++)
@@ -654,7 +340,7 @@ namespace GUI_20212202_BV3N92.Logic
                 }
             }
             List<Lock> dellocks = new List<Lock>();
-            if(opponents.Count == 0)
+            if (opponents.Count == 0)
             {
                 foreach (var item in locks)
                 {
@@ -669,259 +355,102 @@ namespace GUI_20212202_BV3N92.Logic
             Changed?.Invoke(this, null);
         }
 
+        private bool BulletCollisionLogic(Bullet bullet)
+        {
+            foreach (var item in walls)
+            {
+                if (bullet.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in healths)
+            {
+                if (bullet.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in ammos)
+            {
+                if (bullet.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in bricks)
+            {
+                if (bullet.IsColliding(item))
+                {
+                    bricks.Remove(item);
+                    return true;
+                }
+            }
+            foreach (var item in exits)
+            {
+                if (bullet.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in finishes)
+            {
+                if (bullet.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in locks)
+            {
+                if (bullet.IsColliding(item))
+                {
+                    return true;
+                }
+            }
+            foreach (var item in opponents)
+            {
+                if (bullet.IsColliding(item))
+                {
+                    opponents.Remove(item);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool BulletCollides(Bullet bullet)
         {
             switch (bullet.Direction)
             {
                 case Directions.up:
                     bullet.Y -= 10;
-                    foreach (var item in walls)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in healths)
-                    {
-                        if (bullet.IsColliding(item))
-                        {                           
-                            return true;
-                        }
-                    }
-                    foreach (var item in ammos)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in bricks)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            bricks.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in exits)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in finishes)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in locks)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in opponents)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            opponents.Remove(item);
-                            return true;
-                        }
-                    }
-                    return false;
+                    return BulletCollisionLogic(bullet);
                 case Directions.left:
                     bullet.X -= 10;
-                    foreach (var item in walls)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in healths)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in ammos)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in bricks)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            bricks.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in exits)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in finishes)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in locks)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in opponents)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            opponents.Remove(item);
-                            return true;
-                        }
-                    }
-                    return false;
+                    return BulletCollisionLogic(bullet);
                 case Directions.down:
                     bullet.Y += 10;
-                    foreach (var item in walls)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in healths)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in ammos)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in bricks)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            bricks.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in exits)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in finishes)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in locks)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in opponents)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            opponents.Remove(item);
-                            return true;
-                        }
-                    }
-                    return false;
+                    return BulletCollisionLogic(bullet);
                 case Directions.right:
-                    foreach (var item in walls)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in healths)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in ammos)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in bricks)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            bricks.Remove(item);
-                            return true;
-                        }
-                    }
-                    foreach (var item in exits)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in finishes)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in locks)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            return true;
-                        }
-                    }
-                    foreach (var item in opponents)
-                    {
-                        if (bullet.IsColliding(item))
-                        {
-                            opponents.Remove(item);
-                            return true;
-                        }
-                    }
-                    return false;
+                    return BulletCollisionLogic(bullet);
                 default:
                     return true;
             }
         }
         private void LoadLevel(string lvlPath, bool saved)
         {
+            player = new Player();
+            opponents = new List<Opponent>();
+            walls = new List<Wall>();
+            healths = new List<Health>();
+            ammos = new List<Ammo>();
+            bricks = new List<Brick>();
+            exits = new List<Exit>();
+            finishes = new List<Finish>();
+            locks = new List<Lock>();
+
+            bullets = new List<Bullet>();
+
             if (saved)
             {
                 string[] lines = File.ReadAllLines(lvlPath);
