@@ -21,14 +21,17 @@ namespace GUI_20212202_BV3N92.Windows
     public partial class MenuWindow : Window
     {
         MainWindow window;
+        public bool resume;
         public MenuWindow(MainWindow window)
         {
             this.window = window;
+            resume = false;
             InitializeComponent();
         }
 
         private void b_resume_Click(object sender, RoutedEventArgs e)
         {
+            resume = true;
             this.Close();
         }
 
