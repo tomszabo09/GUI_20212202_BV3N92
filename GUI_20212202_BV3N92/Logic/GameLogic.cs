@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace GUI_20212202_BV3N92.Logic
 {
@@ -30,6 +31,7 @@ namespace GUI_20212202_BV3N92.Logic
         private Queue<string> levels;
 
         private string currentLevel;
+
 
         public Player player { get; set; } = new Player();
         public List<Opponent> opponents { get; set; }
