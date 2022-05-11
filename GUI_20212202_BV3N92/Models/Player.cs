@@ -21,10 +21,6 @@ namespace GUI_20212202_BV3N92.Models
             type = Logic.ItemType.player;
         }
 
-        public void Shoot(Directions direction)
-        {
-            // TODO: implement shooting
-        }
         public void Calcangle()
         {
             Directions dir = this.Direction;

@@ -17,10 +17,5 @@ namespace GUI_20212202_BV3N92.Models
             Direction = Directions.right;
             type = Logic.ItemType.opponent;
         }
-
-        public void Shoot(Directions direction)
-        {
-            // TODO: implement shooting
-        }
     }
 }
