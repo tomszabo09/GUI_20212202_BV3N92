@@ -9,8 +9,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" WindowState="Maximized" KeyDown="Window_KeyDown">
     <Window.Resources>
-        <logic:GameLogic x:Key="logic"/>
         <renderer:Display x:Key="display"/>
+        <logic:GameLogic x:Key="logic"/>
     </Window.Resources>
     <Canvas x:Name="canvas" Background="Black">
         <renderer:Display x:Name="display" Margin="00,30,0,0"/>
@@ -22,9 +22,9 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
             </Grid.RowDefinitions>
-            <Label Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding Player.Health}" ContentStringFormat="Health: {0}" Grid.Column="0"/>
-            <Label Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding Player.Ammo}" ContentStringFormat="Ammo: {0}" Grid.Column="1"/>
-            <Label Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding CurrentLevel}" ContentStringFormat="Level: {0}" Grid.Column="2"/>
+            <Label x:Name="health" Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding Player.Health}" ContentStringFormat="Health: {0}" Grid.Column="0"/>
+            <Label x:Name="ammo" Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding Player.Ammo}" ContentStringFormat="Ammo: {0}" Grid.Column="1"/>
+            <Label x:Name="level" Foreground="Wheat" Margin="10,0,10,0" Padding="10" FontFamily="ROG Fonts" FontSize="16" FontWeight="Bold" Content="{Binding CurrentLevel}" ContentStringFormat="Level: {0}" Grid.Column="2"/>
         </Grid>
     </Canvas>
 </Window>

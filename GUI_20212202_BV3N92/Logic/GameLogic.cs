@@ -1,6 +1,7 @@
 ﻿using GUI_20212202_BV3N92.Models;
 using GUI_20212202_BV3N92.Windows;
 using GUI_20212202_BV3N92.Windows.Ending;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -185,6 +186,7 @@ namespace GUI_20212202_BV3N92.Logic
                     if (player.Ammo > 0)
                     {
                         player.Ammo--;
+                        mainWindow.ammo.Content = player.Ammo;
                         NewShoot(player.Direction);
                     }
                     break;
@@ -202,6 +204,9 @@ namespace GUI_20212202_BV3N92.Logic
                         //restart
                         player.Health = 3;
                         player.Ammo = 3;
+                        mainWindow.ammo.Content = player.Ammo;
+                        mainWindow.health.Content = player.Health;
+                        mainWindow.level.Content = CurrentLevel;
                         LoadLevel(currentLevel);
                     }
                     break;
@@ -225,6 +230,7 @@ namespace GUI_20212202_BV3N92.Logic
                 if (tmpplayer.IsColliding(item))
                 {
                     player.Health++;
+                    mainWindow.health.Content = player.Health;
                     healths.Remove(item);
                     return true;
                 }
@@ -234,6 +240,7 @@ namespace GUI_20212202_BV3N92.Logic
                 if (tmpplayer.IsColliding(item))
                 {
                     player.Ammo += 5;
+                    mainWindow.ammo.Content = player.Ammo;
                     ammos.Remove(item);
                     return true;
                 }
@@ -252,6 +259,7 @@ namespace GUI_20212202_BV3N92.Logic
                     if (levels.Count > 0)
                     {
                         currentLevel = levels.Dequeue();
+                        mainWindow.level.Content = CurrentLevel;
                         LoadLevel(currentLevel);
                     }
                     return true;
@@ -428,6 +436,8 @@ namespace GUI_20212202_BV3N92.Logic
         }
         private void LoadLevel(string lvlPath)
         {
+
+
             opponents = new List<Opponent>();
             walls = new List<Wall>();
             healths = new List<Health>();
@@ -572,12 +582,15 @@ namespace GUI_20212202_BV3N92.Logic
             if (player.Health > 0)
             {
                 player.Health--;
+                mainWindow.health.Content = player.Health;
             }
             else
             {
                 player.Health = 3;
                 player.Ammo = 3;
                 MessageBox.Show("You died! Press Ok to restart level");
+                mainWindow.ammo.Content = player.Ammo;
+                mainWindow.health.Content = player.Health;
                 LoadLevel(currentLevel);
             }
         }
