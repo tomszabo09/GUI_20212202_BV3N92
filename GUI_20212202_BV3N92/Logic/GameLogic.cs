@@ -53,25 +53,16 @@ namespace GUI_20212202_BV3N92.Logic
         public GameLogic()
         {
             string[] lvls = Directory.GetFiles(Path.Combine("levels"), "*.lvl");
-            string saved;
+            bool saved = File.Exists("save.sav");
 
-            try
-            {
-                saved = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "saved"), "*.sav").First();
-            }
-            catch (Exception)
-            {
-
-                saved = null;
-            }
 
             opponents = new List<Opponent>();
             levels = new Queue<string>();
 
-            if (saved != null)
+            if (saved)
             {
                 //TODO: too much // in currentLvl
-                StreamReader sr = new StreamReader(saved);
+                StreamReader sr = new StreamReader("save.sav");
                 string currentLvl = sr.ReadLine();
 
                 int i = 0;
@@ -82,13 +73,14 @@ namespace GUI_20212202_BV3N92.Logic
                 while (i < lvls.Length)
                 {
                     levels.Enqueue(lvls[i]);
+                    i++;
                 }
 
                 sr.Close();
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
-                LoadLevel(saved, true);
+                LoadLevel(currentLvl);
             }
             else
             {
@@ -99,7 +91,7 @@ namespace GUI_20212202_BV3N92.Logic
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
-                LoadLevel(currentLevel, false);
+                LoadLevel(currentLevel);
             }
         }
 
@@ -109,22 +101,16 @@ namespace GUI_20212202_BV3N92.Logic
             this.size = size;
             levels = new Queue<string>();
             string[] lvls = Directory.GetFiles(Path.Combine("levels"), "*.lvl");
-            string saved;
+            bool saved = File.Exists("save.sav");
 
-            try
-            {
-                saved = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "saved"), "*.sav").First();
-            }
-            catch (Exception)
-            {
 
-                saved = null;
-            }
+            opponents = new List<Opponent>();
+            levels = new Queue<string>();
 
-            if (saved != null)
+            if (saved)
             {
                 //TODO: too much // in currentLvl
-                StreamReader sr = new StreamReader(saved);
+                StreamReader sr = new StreamReader("save.sav");
                 string currentLvl = sr.ReadLine();
 
                 int i = 0;
@@ -135,13 +121,14 @@ namespace GUI_20212202_BV3N92.Logic
                 while (i < lvls.Length)
                 {
                     levels.Enqueue(lvls[i]);
+                    i++;
                 }
 
                 sr.Close();
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
-                    LoadLevel(saved, true);
+                LoadLevel(currentLvl);
             }
             else
             {
@@ -152,7 +139,7 @@ namespace GUI_20212202_BV3N92.Logic
 
                 if (levels.Count > 0)
                     currentLevel = levels.Dequeue();
-                    LoadLevel(currentLevel, false);
+                LoadLevel(currentLevel);
             }
         }
 
@@ -213,7 +200,7 @@ namespace GUI_20212202_BV3N92.Logic
                         //restart
                         player.Health = 3;
                         player.Ammo = 3;
-                        LoadLevel(currentLevel, false);
+                        LoadLevel(currentLevel);
                     }
                     break;
                 default:
@@ -263,7 +250,7 @@ namespace GUI_20212202_BV3N92.Logic
                     if (levels.Count > 0)
                     {
                         currentLevel = levels.Dequeue();
-                        LoadLevel(currentLevel, false);
+                        LoadLevel(currentLevel);
                     }
                     return true;
                 }
@@ -437,7 +424,7 @@ namespace GUI_20212202_BV3N92.Logic
                     return true;
             }
         }
-        private void LoadLevel(string lvlPath, bool saved)
+        private void LoadLevel(string lvlPath)
         {
             opponents = new List<Opponent>();
             walls = new List<Wall>();
@@ -450,8 +437,6 @@ namespace GUI_20212202_BV3N92.Logic
 
             bullets = new List<Bullet>();
 
-            if (saved)
-            {
                 string[] lines = File.ReadAllLines(lvlPath);
                 Map = new MapItem[int.Parse(lines[1]), int.Parse(lines[0])];
                 rectWidth = size.Width / Map.GetLength(1);
@@ -566,150 +551,17 @@ namespace GUI_20212202_BV3N92.Logic
                                     displayHeight = rectHeight
                                 };
                                 break;
-                        }
                     }
                 }
+                    
             }
-            else
-            {
-                string[] lines = File.ReadAllLines(lvlPath);
-                Map = new MapItem[int.Parse(lines[1]), int.Parse(lines[0])];
-                rectWidth = size.Width / Map.GetLength(1);
-                rectHeight = size.Height / Map.GetLength(0);
-                for (int i = 0; i < Map.GetLength(0); i++)
-                {
-                    for (int j = 0; j < Map.GetLength(1); j++)
-                    {
-                        switch (lines[i + 2][j])
-                        {
-                            case 'p':
-                                player.X = (rectWidth * j) + 5;
-                                player.Y = (rectHeight * i) + 5;
-                                player.displayWidth = rectWidth - 10;
-                                player.displayHeight = rectHeight - 10;
-                                Map[i, j] = player;
-                                break;
-                            case 'w':
-                                var wall = new Wall()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = wall;
-                                walls.Add(wall);
-                                break;
-                            case 'a':
-                                var ammo = new Ammo()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = ammo;
-                                ammos.Add(ammo);
-                                break;
-                            case 'o':
-                                var op = new Opponent()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = op;
-                                opponents.Add(op);
-                                break;
-                            case 'b':
-                                var brick = new Brick()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = brick;
-                                bricks.Add(brick);
-                                break;
-                            case 'h':
-                                var hp = new Health()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = hp;
-                                healths.Add(hp);
-                                break;
-                            case 'l':
-                                var locked = new Lock()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = locked;
-                                locks.Add(locked);
-                                break;
-                            case 'e':
-                                var exit = new Exit()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = exit;
-                                exits.Add(exit);
-                                break;
-                            case 'f':
-                                var finish = new Finish()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                Map[i, j] = finish;
-                                finishes.Add(finish);
-                                break;
-                            default:                                
-                                Map[i, j] = new Floor()
-                                {
-                                    X = rectWidth * j,
-                                    Y = rectHeight * i,
-                                    displayWidth = rectWidth,
-                                    displayHeight = rectHeight
-                                };
-                                break;
-                        }
-                    }
-                }
                 ;
-            }
-            
         }
 
         private void SaveLevel()
         {
             StreamWriter sw = new StreamWriter("save.sav");
             sw.WriteLine(currentLevel);
-            sw.WriteLine(Map.GetLength(1));
-            sw.WriteLine(Map.GetLength(0));     
-
-            for (int i = 0; i < Map.GetLength(0); i++)
-            {
-                for (int j = 0; j < Map.GetLength(1); j++)
-                {
-                    sw.Write(Map[i + 2, j]);
-                }
-                sw.Write("\n");
-            }
-
             sw.Close();
         }       
 
@@ -724,7 +576,7 @@ namespace GUI_20212202_BV3N92.Logic
                 player.Health = 3;
                 player.Ammo = 3;
                 MessageBox.Show("You died! Press Ok to restart level");
-                LoadLevel(currentLevel, false);
+                LoadLevel(currentLevel);
             }
         }
     }
