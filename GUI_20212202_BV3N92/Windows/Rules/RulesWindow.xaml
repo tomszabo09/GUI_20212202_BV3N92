@@ -1,0 +1,32 @@
+﻿<Window x:Class="GUI_20212202_BV3N92.Windows.Rules.RulesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI_20212202_BV3N92.Windows.Rules"
+        mc:Ignorable="d"
+        Title="Rules" Background="Chocolate" Height="450" Width="800">
+    <Grid>
+        <TextBlock TextWrapping="WrapWithOverflow" FontSize="14" Foreground="Gold" Margin="20">
+            Welcome to Game of Escape!<LineBreak/><LineBreak/>
+            
+            The goal is to escape the labyrinth through multiple levels. Over the course of your journey you will encounter opponents that have to be eliminated in order to progress to the next level.<LineBreak/>
+            At the start of the game you have 3 lives and 3 ammo, these can be replenished by pickup items.<LineBreak/>
+            Health, ammo and the current level are displayed in the upper left corner.<LineBreak/><LineBreak/>
+            
+            Controls:<LineBreak/>
+            W - Move up<LineBreak/>
+            A - Move left<LineBreak/>
+            S - Move down<LineBreak/>
+            D - Move right<LineBreak/>
+            Space - Shoot<LineBreak/>
+            ESC - Open menu<LineBreak/><LineBreak/>
+            
+            You have the option to restart or save the current level, in case of the latter you do not have to start from the beginning after exiting the game.<LineBreak/>
+            Restarting or dying reloads the current level, with lives and ammo filled up.<LineBreak/>
+            The rules can be viewed at any time via the corresponding menu option.<LineBreak/><LineBreak/>
+            
+            Enjoy!
+        </TextBlock>
+    </Grid>
+</Window>
