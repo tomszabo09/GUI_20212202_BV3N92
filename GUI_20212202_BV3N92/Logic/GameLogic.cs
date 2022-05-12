@@ -1,11 +1,13 @@
 ﻿using GUI_20212202_BV3N92.Models;
 using GUI_20212202_BV3N92.Windows;
+using GUI_20212202_BV3N92.Windows.Rules;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -25,6 +27,7 @@ namespace GUI_20212202_BV3N92.Logic
         public event EventHandler Changed;
 
         MainWindow mainWindow;
+        MenuWindow menu;
         System.Windows.Size size;
         public double rectWidth;
         public double rectHeight;
@@ -44,6 +47,8 @@ namespace GUI_20212202_BV3N92.Logic
         public MapItem[,] Map { get; set; }
         public Player Player { get => player; }
         public string CurrentLevel { get => currentLevel.Substring(10, 2); }
+
+        public static object lockObject = new object();
 
         public GameLogic()
         {
@@ -180,7 +185,7 @@ namespace GUI_20212202_BV3N92.Logic
                     }
                     break;
                 case Controls.menu:
-                    MenuWindow menu = new MenuWindow(mainWindow);
+                    menu = new MenuWindow(mainWindow);
 
                     if (menu.ShowDialog() == true)
                     {
