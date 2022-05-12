@@ -1,6 +1,8 @@
 ﻿using GUI_20212202_BV3N92.Logic;
+using GUI_20212202_BV3N92.Windows.Rules;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,8 @@ namespace GUI_20212202_BV3N92
     public partial class MainWindow : Window
     {
         GameLogic logic;
+        RulesWindow rules;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,7 +47,13 @@ namespace GUI_20212202_BV3N92
             dt.Tick += Dt_Tick;
             dt.Start();
             display.Resize(new Size(canvas.ActualWidth, canvas.ActualHeight));
-            display.InvalidateVisual();           
+            display.InvalidateVisual();
+
+            if (!File.Exists("save.sav"))
+            {
+                rules = new RulesWindow();
+                rules.Show();
+            }
         }
 
         private void Dt_Tick(object sender, EventArgs e)
