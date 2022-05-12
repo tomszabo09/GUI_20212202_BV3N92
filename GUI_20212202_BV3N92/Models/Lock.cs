@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GUI_20212202_BV3N92.Models
 {
-    public class Lock:MapItem
+    public class Lock: MapItem
     {
         public Lock()
         {

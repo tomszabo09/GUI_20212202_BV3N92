@@ -9,8 +9,11 @@ using System.Windows;
 
 namespace GUI_20212202_BV3N92.Models
 {
-    public class Bullet:MapItem
+    public class Bullet : MapItem
     {
+        public double Speed;
+        public Directions Direction { get; set; }
+        
         public Bullet(double X,double Y, double speed, double displayWidth,double displayHeight,Directions dir)
         {
             this.X = X;
@@ -20,8 +23,7 @@ namespace GUI_20212202_BV3N92.Models
             this.displayHeight = displayHeight;
             this.Direction = dir;
         }
-        public Directions Direction { get; set; }
-        public double Speed;       
+
         public void Move()
         {
             switch (this.Direction)

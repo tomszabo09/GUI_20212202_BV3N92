@@ -40,6 +40,5 @@ namespace GUI_20212202_BV3N92.Models
                     break;
             }
         }
-        
     }
 }

@@ -26,7 +26,6 @@ namespace GUI_20212202_BV3N92
         public MainWindow()
         {
             InitializeComponent();
-            
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -57,24 +56,23 @@ namespace GUI_20212202_BV3N92
             switch (e.Key)
             {
                 case Key.W:
-                    logic.Control(GameLogic.Controls.moveUp);
+                    logic.Control(Controls.moveUp);
                     break;
                 case Key.S:
-                    logic.Control(GameLogic.Controls.moveDown);
+                    logic.Control(Controls.moveDown);
                     break;
                 case Key.A:
-                    logic.Control(GameLogic.Controls.moveLeft);
+                    logic.Control(Controls.moveLeft);
                     break;
                 case Key.D:
-                    logic.Control(GameLogic.Controls.moveRight);
+                    logic.Control(Controls.moveRight);
                     break;                
                 case Key.Space:
-                     logic.Control(GameLogic.Controls.shoot);
+                     logic.Control(Controls.shoot);
                     break;
                 case Key.Escape:
-                    logic.Control(GameLogic.Controls.menu);
+                    logic.Control(Controls.menu);
                     break;
-
             }
         }
     }

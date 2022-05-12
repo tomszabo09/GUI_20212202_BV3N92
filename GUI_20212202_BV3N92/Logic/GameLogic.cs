@@ -16,21 +16,20 @@ namespace GUI_20212202_BV3N92.Logic
     {
         player, wall, floor, ammo, opponent, brick, health, locked, exit, finish
     }
+    public enum Controls
+    {
+        moveUp, moveLeft, moveDown, moveRight, shoot, menu
+    }
     public class GameLogic : IGameModel
     {
         public event EventHandler Changed;
 
         MainWindow mainWindow;
-
         System.Windows.Size size;
-
         public double rectWidth;
-
         public double rectHeight;
-
-        private Queue<string> levels;
-
         private string currentLevel;
+        private Queue<string> levels;
 
         public Player player { get; set; } = new Player();
         public List<Opponent> opponents { get; set; }
@@ -45,11 +44,6 @@ namespace GUI_20212202_BV3N92.Logic
         public MapItem[,] Map { get; set; }
         public Player Player { get => player; }
         public string CurrentLevel { get => currentLevel.Substring(10, 2); }
-
-        public enum Controls
-        {
-            moveUp, moveLeft, moveDown, moveRight, shoot, menu
-        }
 
         public GameLogic()
         {
@@ -187,16 +181,13 @@ namespace GUI_20212202_BV3N92.Logic
                     break;
                 case Controls.menu:
                     MenuWindow menu = new MenuWindow(mainWindow);
-                    //menu.ShowDialog();
 
                     if (menu.ShowDialog() == true)
                     {
-                        //save
                         SaveLevel();
                     }
                     else if (!menu.resume)
                     {
-                        //restart
                         player.Health = 3;
                         player.Ammo = 3;
                         mainWindow.ammo.Content = player.Ammo;

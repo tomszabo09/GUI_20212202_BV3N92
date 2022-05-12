@@ -22,6 +22,7 @@ namespace GUI_20212202_BV3N92.Windows
     {
         MainWindow window;
         public bool resume;
+
         public MenuWindow(MainWindow window)
         {
             this.window = window;

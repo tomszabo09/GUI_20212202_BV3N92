@@ -28,6 +28,7 @@ namespace GUI_20212202_BV3N92.Renderer
             this.model = model;
             this.model.Changed+=(sender,eventargs)=>this.InvalidateVisual();
         }
+
         #region brushes
         public Brush FloorBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "blank.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush PlayerBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "player.bmp"), UriKind.RelativeOrAbsolute))); } }
@@ -41,6 +42,7 @@ namespace GUI_20212202_BV3N92.Renderer
         public Brush FinishBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images", "finish.bmp"), UriKind.RelativeOrAbsolute))); } }
         public Brush BulletBrush { get { return new ImageBrush(new BitmapImage(new Uri(Path.Combine("Images","bullet.bmp"), UriKind.RelativeOrAbsolute))); } }
         #endregion
+
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
@@ -91,7 +93,6 @@ namespace GUI_20212202_BV3N92.Renderer
                 {
                     drawingContext.DrawRectangle(BulletBrush, null, item.CalcArea());
                 }
-
             }
         }
     }

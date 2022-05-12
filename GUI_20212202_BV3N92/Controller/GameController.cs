@@ -22,22 +22,22 @@ namespace GUI_20212202_BV3N92.Controller
             switch (key)
             {
                 case Key.W:
-                    control.Control(GameLogic.Controls.moveUp);
+                    control.Control(Controls.moveUp);
                     break;
                 case Key.A:
-                    control.Control(GameLogic.Controls.moveLeft);
+                    control.Control(Controls.moveLeft);
                     break;
                 case Key.S:
-                    control.Control(GameLogic.Controls.moveDown);
+                    control.Control(Controls.moveDown);
                     break;
                 case Key.D:
-                    control.Control(GameLogic.Controls.moveRight);
+                    control.Control(Controls.moveRight);
                     break;
                 case Key.Space:
-                    control.Control(GameLogic.Controls.shoot);
+                    control.Control(Controls.shoot);
                     break;
                 case Key.Escape:
-                    control.Control(GameLogic.Controls.menu);
+                    control.Control(Controls.menu);
                     break;
             }
         }
