@@ -21,6 +21,7 @@
     <None Remove="Images\wall.bmp" />
     <None Remove="levels\lvl00.lvl" />
     <None Remove="levels\lvl01.lvl" />
+    <None Remove="levels\lvl02.lvl" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,6 +65,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="levels\lvl01.lvl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="levels\lvl02.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
