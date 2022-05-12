@@ -581,7 +581,7 @@ namespace GUI_20212202_BV3N92.Logic
             {
                 player.Health = 3;
                 player.Ammo = 3;
-                MessageBox.Show("You died! Press Ok to restart level");
+                MessageBox.Show("You died! Click OK or X to restart level!");
                 mainWindow.ammo.Content = player.Ammo;
                 mainWindow.health.Content = player.Health;
                 LoadLevel(currentLevel);
