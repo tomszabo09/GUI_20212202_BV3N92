@@ -1,4 +1,5 @@
 ﻿using GUI_20212202_BV3N92.Logic;
+using GUI_20212202_BV3N92.Windows.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace GUI_20212202_BV3N92.Windows
     public partial class MenuWindow : Window
     {
         MainWindow window;
+        RulesWindow rules;
         public bool resume;
 
         public MenuWindow(MainWindow window)
@@ -34,6 +36,12 @@ namespace GUI_20212202_BV3N92.Windows
         {
             resume = true;
             this.Close();
+        }
+
+        private void b_rules_Click(object sender, RoutedEventArgs e)
+        {
+            rules = new RulesWindow();
+            rules.Show();
         }
 
         private void b_save_Click(object sender, RoutedEventArgs e)

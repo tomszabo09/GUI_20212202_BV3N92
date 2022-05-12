@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI_20212202_BV3N92.Windows"
         mc:Ignorable="d"
-        Title="Menu" Background="Chocolate" Height="300" Width="300" TextBlock.TextAlignment="Center">
+        Title="Menu" Background="Chocolate" Height="350" Width="300">
     <Grid>
         <StackPanel>
             <Button x:Name="b_resume" Content="Resume" Padding="10" Margin="10,35,10,10" Click="b_resume_Click" Background="Goldenrod"/>
+            <Button x:Name="b_rules" Content="Rules" Padding="10" Margin="10" Click="b_rules_Click" Background="Goldenrod"/>
             <Button x:Name="b_save" Content="Save" Padding="10" Margin="10" Click="b_save_Click" Background="Goldenrod"/>
             <Button x:Name="b_resetart" Content="Restart" Padding="10" Margin="10" Click="b_resetart_Click" Background="Goldenrod"/>
             <Button x:Name="b_exit" Content="Exit" Padding="10" Margin="10" Click="b_exit_Click" Background="Goldenrod"/>
